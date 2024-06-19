@@ -1,0 +1,9 @@
+load Example2Tables.apsimx
+
+[Weather].FileName = WeatherFileName.met
+add [Block] ExampleSoilLibrary.apsimx;[SoilName]
+delete [Block].Soil
+
+save WeatherFileName_SoilName.apsimx
+
+run
