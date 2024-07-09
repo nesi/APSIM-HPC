@@ -1,9 +1,9 @@
 #!/bin/bash -e 
 
-export CLUSTER="mahuika"
+export hostname=$(hostname)
 
 
-if [ "$CLUSTER" = "mahuika" ] 
+if [ "$hostname" = "mahuika01" ] 
 then
 	sbatch mahuika-submit.slurm
 else 
