@@ -18,7 +18,7 @@ export VERSION="2024.05.7470.0"
 export APPTAINER_IMAGE="/nesi/project/agresearch04152/apps/APSIM-CONTAINER/container-image/APSIM-${VERSION}.aimg"
 
 #Define apptainer exec comamand 
-export CMD="apptainer exec ${APPTAINER_IMAGE} 
+export CMD="apptainer exec ${APPTAINER_IMAGE}"
 
 #execute the function of interest
-{CMD} Models --apply ${PWD}/ExampleConfig.txt
+${CMD} Models --apply ${PWD}/ExampleConfig.txt
