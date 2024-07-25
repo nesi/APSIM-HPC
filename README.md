@@ -11,4 +11,4 @@ Deploy APSIM on eRI and Mahuika clusters
   * Alsmost all of the SoilNames exist. Weather files willl change but it shouldn't be a problem as we "catch" by them by using the unique `.met` file extension
 * config files should have both the soil names and weather names ( that pattern will not change) . In R scrip Soli name is `$var1`
 * Config files should be on the curernt working directory. ( hard-coded on APSIM)
-* 
+* The base Config file should contain the correct name of the soil library to load soils from, as well as the correct Example file containing the simulations to run on the correct soil and weather files
