@@ -7,7 +7,7 @@
 #SBATCH --output 	slog/%j.out
 
 #define the version of APSIM on following variable
-export APSIM_VERSION="2024.07.7558.0"
+export APSIM_VERSION=""
 
 #define paths for definition file, where the image should be stored
 export IMAGE_PATH="../apsim-simulations/container/"
@@ -35,4 +35,4 @@ setfacl -b "$APPTAINER_TMPDIR"
 unset APPTAINER_BIND
 
 
-apptainer build --force --fakeroot ${IMAGE_PATH}/APSIM-${APSIM_VERSION}.aimg ${DEF_FILE_PATH}/Apptainer.${APSIM_VERSION}
+apptainer build --force --fakeroot ${IMAGE_PATH}/apsim-${APSIM_VERSION}.aimg Apptainer.def
