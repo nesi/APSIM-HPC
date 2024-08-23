@@ -3,14 +3,15 @@ From: ubuntu:focal
 
 %arguments
 	YEAR-MONTH=
-	VERSION=
-
+	TAG=
+	VERSION={{ YEAR-MONTH }}.{{ TAG }}.0
+	
 %labels
 Maintainer Nesi-AgR
-Version {{ YEAR-MONTH }}.{{ VERSION }}.0
+Version {{ VERSION }}
 
 %setup
-  curl --silent -o ${SINGULARITY_ROOTFS}/ApsimSetup.deb https://builds.apsim.info/api/nextgen/download/{{ VERSION }}/Linux
+  curl --silent -o ${SINGULARITY_ROOTFS}/ApsimSetup.deb https://builds.apsim.info/api/nextgen/download/{{ TAG }}/Linux
   curl --silent -o ${SINGULARITY_ROOTFS}/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 %post
   export DEBIAN_FRONTEND=noninteractive
