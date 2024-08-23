@@ -2,11 +2,12 @@ Bootstrap: docker
 From: ubuntu:focal
 
 %arguments
+	YEAR-MONTH=
 	VERSION=
 
 %labels
 Maintainer Nesi-AgR
-Version 2024.07.{{ VERSION }}.0
+Version {{ YEAR-MONTH }}.{{ VERSION }}.0
 
 %setup
   curl --silent -o ${SINGULARITY_ROOTFS}/ApsimSetup.deb https://builds.apsim.info/api/nextgen/download/{{ VERSION }}/Linux
