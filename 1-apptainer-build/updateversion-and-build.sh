@@ -28,4 +28,31 @@ fi
 
 
 # Echo the VERSION variable
-echo "VERSION=${year_month}.${tag}.0"
+#echo "VERSION=${year_month}.${tag}.0"
+
+# Construct the VERSION string
+VERSION="${year_month}.${tag}.0"
+echo "VERSION=${VERSION}"
+
+# Update the build-container.slurm file
+sed -i "s/export APSIM_VERSION=\".*\"/export APSIM_VERSION=\"${VERSION}\"/" build-container.slurm
+
+# Confirm the update in build-container.slurm
+if grep -q "export APSIM_VERSION=\"${VERSION}\"" build-container.slurm; then
+    echo "Successfully updated APSIM_VERSION to \"${VERSION}\" in build-container.slurm"
+else
+    echo "Failed to update build-container.slurm"
+    exit 1
+fi
+
+# Prompt for job submission
+read -p "Would you like to submit the container build Slurm job? (Yes/No): " submit_job
+
+if [[ ${submit_job,,} == "yes" ]]; then
+    sbatch build-container.slurm
+    echo "Container build job submitted."
+else
+    echo "No problem, will leave it with you to submit the build script."
+fi
+
+echo "Script execution complete."
