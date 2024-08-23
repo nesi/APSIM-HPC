@@ -12,6 +12,10 @@ export APSIM_VERSION="2024.07.7558.0"
 #define paths for definition file, where the image should be stored
 export IMAGE_PATH="../apsim-simulations/container/"
 
+if [ ! -d "${IMAGE_PATH}" ]; then
+mkdir ${IMAGE_PATH}
+fi
+
 #purge any pre-loaded modules and load Apptainer
 module purge
 module load Apptainer/1.2.5
@@ -19,6 +23,10 @@ module load Apptainer/1.2.5
 #set cache and tmpdir to nobackup. Otherwise, /home will be used by default which is not ideal due to it's 20GB strict quota
 export APPTAINER_CACHEDIR="../../container-cache/"
 export APPTAINER_TMPDIR="../../container-cache/"
+
+if [ ! -d "${APPTAINER_CACHEDIR}" ]; then
+mkdir ${APPTAINER_CACHEDIR}
+fi
 
 #following directive (setfacl) is a unique requirement to nobackup (GPFS) filesystem
 setfacl -b "$APPTAINER_TMPDIR"
