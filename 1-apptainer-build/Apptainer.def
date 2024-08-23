@@ -4,7 +4,7 @@ From: ubuntu:focal
 %arguments
 	export YEAR.MONTH=
 	export TAG=
-	export VERSION=
+	export VERSION=${YEAR.MONTH}.${TAG}.0
 	
 %labels
 Maintainer Nesi-AgR
