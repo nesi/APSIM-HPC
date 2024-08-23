@@ -2,7 +2,7 @@ Bootstrap: docker
 From: ubuntu:focal
 
 %arguments
-	export YEAR-MONTH=
+	export YEAR.MONTH=
 	export TAG=
 	export VERSION=
 	
