@@ -4,10 +4,10 @@
 #SBATCH --time          0-01:30:00                #DD-HH:MM:SS
 #SBATCH --mem		24GB      
 #SBATCH --cpus-per-task	4
-#SBATCH --output 	slog/%j.out
+#SBATCH --output 	%j.out
 
 #define the version of APSIM on following variable
-export APSIM_VERSION=""
+export APSIM_VERSION="2024.07.7558.0"
 
 #define paths for definition file, where the image should be stored
 export IMAGE_PATH="../apsim-simulations/container/"
