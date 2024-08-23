@@ -13,7 +13,7 @@ export APSIM_VERSION="2024.07.7558.0"
 export IMAGE_PATH="../apsim-simulations/container/"
 
 if [ ! -d "${IMAGE_PATH}" ]; then
-mkdir ${IMAGE_PATH}
+mkdir -p ${IMAGE_PATH}
 fi
 
 #purge any pre-loaded modules and load Apptainer
@@ -25,7 +25,7 @@ export APPTAINER_CACHEDIR="../../container-cache/"
 export APPTAINER_TMPDIR="../../container-cache/"
 
 if [ ! -d "${APPTAINER_CACHEDIR}" ]; then
-mkdir ${APPTAINER_CACHEDIR}
+mkdir -p ${APPTAINER_CACHEDIR}
 fi
 
 #following directive (setfacl) is a unique requirement to nobackup (GPFS) filesystem
