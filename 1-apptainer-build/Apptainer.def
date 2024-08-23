@@ -2,16 +2,15 @@ Bootstrap: docker
 From: ubuntu:focal
 
 %arguments
-	YEAR-MONTH=
-	TAG=
-	VERSION={{ YEAR-MONTH }}.{{ TAG }}.0
+	export YEAR-MONTH=
+	export TAG=
+	export VERSION=
 	
 %labels
 Maintainer Nesi-AgR
-Version {{ VERSION }}
 
 %setup
-  curl --silent -o ${SINGULARITY_ROOTFS}/ApsimSetup.deb https://builds.apsim.info/api/nextgen/download/{{ TAG }}/Linux
+  curl --silent -o ${SINGULARITY_ROOTFS}/ApsimSetup.deb https://builds.apsim.info/api/nextgen/download/${TAG}/Linux
   curl --silent -o ${SINGULARITY_ROOTFS}/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 %post
   export DEBIAN_FRONTEND=noninteractive
