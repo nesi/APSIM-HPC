@@ -103,6 +103,6 @@ fi
 
 echo ""
 
-echo "Script execution complete."
+echo "Average build time of the container is 55minutes."
 
 
