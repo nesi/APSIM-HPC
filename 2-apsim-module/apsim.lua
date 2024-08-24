@@ -15,7 +15,7 @@ local function prependPath(envVar, path)
     if oldVal:match("^" .. path) then
         return  -- Path is already at the beginning, do nothing
     end
-    environ.prepend_path(envVar, path)
+    prepend_path(envVar, path)
 end
 
 -- Add container paths to PATH
