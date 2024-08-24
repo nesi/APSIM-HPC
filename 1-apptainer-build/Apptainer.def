@@ -24,6 +24,8 @@ Maintainer Nesi-AgR
   apt-get install -y r-base r-base-dev libcurl4-openssl-dev libssl-dev libxml2-dev
 
   #Install tidyr
+  R --no-echo -e 'install.packages("purr", repos="https://cloud.r-project.org/")'
+  R --no-echo -e 'install.packages("stringr", repos="https://cloud.r-project.org/")'
   R --no-echo -e 'install.packages("tidyr", repos="https://cloud.r-project.org/")'
 
   ## Configure timezone
