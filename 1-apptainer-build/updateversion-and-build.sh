@@ -13,7 +13,7 @@ echo ""
 
 # Validate Year and Month format
 if ! [[ $year_month =~ ^[0-9]{4}\.[0-9]{2}$ ]]; then
-    echo "Invalid format for Year and Month. Please use YYYY.MM (e.g., 2024.08)"
+    echo "$(tput setaf 1)Invalid format for Year and Month.$(tput sgr0) Please use YYYY.MM (e.g., 2024.08)"
     exit 1
 fi
 
@@ -23,9 +23,9 @@ read -p "Enter TAG: " tag
 echo ""
 
 sed -i \
-    -e "s/export YEAR\.MONTH=.*/export YEAR.MONTH=${year_month}/" \
+    -e "s/YEAR\.MONTH=.*/YEAR.MONTH=${year_month}/" \
     -e "s/year_month=.*/year_month=${year_month}/" \
-    -e "s/export TAG=.*/export TAG=${tag}/" \
+    -e "s/TAG=.*/TAG=${tag}/" \
     -e "/^%arguments/,/^%/ s/^\s*TAG=.*/    TAG=${tag}/" \
     Apptainer.def
 
@@ -34,7 +34,7 @@ echo ""
 # Confirm the updates
 if (grep -q "YEAR\.MONTH=${year_month}" Apptainer.def || grep -q "year_month=${year_month}" Apptainer.def) && \
    grep -q "TAG=${tag}" Apptainer.def; then
-    echo "Successfully updated YEAR.MONTH to ${year_month} and TAG to ${tag} in Apptainer.def"
+    echo "Updated YEAR.MONTH to ${year_month} and TAG to ${tag} in Apptainer.def"
 else
     echo "Failed to update Apptainer.def"
     exit 1
@@ -45,7 +45,7 @@ sed -i '/^%setup/a\    curl --silent -o ${APPTAINER_ROOTFS}/ApsimSetup.deb https
 
 # Confirm the curl command was added
 if grep -q "curl.*ApsimSetup\.deb.*${tag}" Apptainer.def; then
-    echo "Successfully added curl command with TAG ${tag} to Apptainer.def"
+    echo "Added curl command with TAG ${tag} to Apptainer.def"
 else
     echo "Failed to add curl command to Apptainer.def"
     exit 1
@@ -103,6 +103,6 @@ fi
 
 echo ""
 
-echo "Average build time of the container is 55minutes."
+echo "Average build time of the container is 30 minutes."
 
 
