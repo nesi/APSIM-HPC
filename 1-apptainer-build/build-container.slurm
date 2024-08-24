@@ -7,7 +7,7 @@
 #SBATCH --output 	%j.out
 
 #define the version of APSIM on following variable
-export APSIM_VERSION="2024.08.7572.0"
+export APSIM_VERSION=""
 
 #define paths for definition file, where the image should be stored
 export IMAGE_PATH="../../apsim-simulations/container/"
