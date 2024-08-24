@@ -45,10 +45,27 @@ else
     exit 1
 fi
 
+
 # Prompt for job submission
 read -p "Would you like to submit the container build Slurm job? (Yes/No): " submit_job
 
 if [[ ${submit_job,,} == "yes" ]]; then
+    # Ask which system to submit to
+    read -p "Are you submitting this to mahuika or eRI? " system
+
+    # Set CACHETMPDIR based on the answer
+    if [[ ${system,,} == "mahuika" ]]; then
+        sed -i 's|^export CACHETMPDIR=.*|export CACHETMPDIR="/nesi/nobackup/agresearch04152/container-cache"|' build-container.slurm
+        echo "CACHETMPDIR set for mahuika."
+    elif [[ ${system,,} == "eri" ]]; then
+        sed -i 's|^export CACHETMPDIR=.*|export CACHETMPDIR="/agr/persist/projects/2024_apsim_improvements/container-cache"|' build-container.slurm
+        echo "CACHETMPDIR set for eRI."
+    else
+        echo "Invalid system specified. Please set CACHETMPDIR manually."
+        exit 1
+    fi
+
+    # Submit the job
     sbatch build-container.slurm
     echo "Container build job submitted."
 else
@@ -56,3 +73,5 @@ else
 fi
 
 echo "Script execution complete."
+
+
