@@ -12,7 +12,7 @@ load("Apptainer")
 -- Module description
 whatis("Name: APSIM")
 whatis("Version: {version}")
-whatis("Description: This is a module for the APSIM Apptainer container")
+whatis("Description: The Leading Software Framework for Agricultural Systems Modelling and Simulation")
 whatis("URL: https://www.apsim.info/")
 
 -- Define the Apptainer image path
