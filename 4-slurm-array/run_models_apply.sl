@@ -14,7 +14,7 @@
 module load Apptainer
 export APPTAINER_BIND="/agr/scratch,/agr/persist"
 
-export APPTAINER_CMD="apptainer exec /agr/persist/projects/2024_apsim_improvements/APSIM-eri-mahuika/apsim-simulations/container/apsim-2024.08.7572.0.aimg"
+export APPTAINER_CMD="apptainer exec /agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.08.7572.0.aimg"
 
 
 
