@@ -49,6 +49,9 @@ create_exec_alias("R")
 create_exec_alias("Rscript")
 -- Add more executables as needed
 
+-- Set the APPTAINER_BIND environment variable to bind mount specific directories
+setenv("APPTAINER_BIND", "/agr/scratch:/agr/scratch,/agr/persist:/agr/persist")
+
 -- If you want to set the Apptainer image as a variable that can be used elsewhere
 setenv("APSIM_IMAGE", image)
 '''
