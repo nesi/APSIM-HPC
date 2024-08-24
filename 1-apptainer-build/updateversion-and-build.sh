@@ -57,17 +57,21 @@ if [[ ${submit_job,,} == "yes" ]]; then
     if [[ ${system,,} == "mahuika" ]]; then
         sed -i 's|^export CACHETMPDIR=.*|export CACHETMPDIR="/nesi/nobackup/agresearch04152/container-cache"|' build-container.slurm
         echo "CACHETMPDIR set for mahuika."
+        
+        # Submit the job with milan partition
+        sbatch --partition=milan build-container.slurm
+        echo "Container build job submitted to milan partition on mahuika."
     elif [[ ${system,,} == "eri" ]]; then
         sed -i 's|^export CACHETMPDIR=.*|export CACHETMPDIR="/agr/persist/projects/2024_apsim_improvements/container-cache"|' build-container.slurm
         echo "CACHETMPDIR set for eRI."
+        
+        # Submit the job without specifying partition
+        sbatch build-container.slurm
+        echo "Container build job submitted on eRI."
     else
         echo "Invalid system specified. Please set CACHETMPDIR manually."
         exit 1
     fi
-
-    # Submit the job
-    sbatch build-container.slurm
-    echo "Container build job submitted."
 else
     echo "No problem, will leave it with you to submit the build script."
 fi
