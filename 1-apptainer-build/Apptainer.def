@@ -3,16 +3,15 @@ From: ubuntu:focal
 
 %arguments
     TAG=7572
+    YEAR.MONTH=2024.08
+    VERSION=${YEAR.MONTH}.${TAG}.0
 
-%environment
-	export YEAR.MONTH=2024.08
-	export TAG=7572
-	export VERSION=${YEAR.MONTH}.${TAG}.0
 	
 %labels
 Maintainer Nesi-AgR
 
 %setup
+    curl --silent -o ${APPTAINER_ROOTFS}/ApsimSetup.deb https://builds.apsim.info/api/nextgen/download/7572/Linux
   curl --silent -o ${APPTAINER_ROOTFS}/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 
 %post
@@ -22,6 +21,13 @@ Maintainer Nesi-AgR
   apt -y install /packages-microsoft-prod.deb
   apt-get update
   apt-get -y install dotnet-runtime-6.0 libsqlite3-dev tzdata
+
+  # Install locale package
+  apt-get install -y locales
+
+  # Generate the desired locales (e.g., en_US.UTF-8)
+  locale-gen en_US.UTF-8
+  dpkg-reconfigure locales
 
   #install R dependencies 
   apt-get install -y r-base r-base-dev libcurl4-openssl-dev libssl-dev libxml2-dev
