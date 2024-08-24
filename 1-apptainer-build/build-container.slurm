@@ -7,10 +7,10 @@
 #SBATCH --output 	%j.out
 
 #define the version of APSIM on following variable
-export APSIM_VERSION="2024.07.7558.0"
+export APSIM_VERSION="2024.08.7572.0"
 
 #define paths for definition file, where the image should be stored
-export IMAGE_PATH="../apsim-simulations/container/"
+export IMAGE_PATH="../../apsim-simulations/container/"
 
 if [ ! -d "${IMAGE_PATH}" ]; then
 mkdir -p ${IMAGE_PATH}
@@ -20,7 +20,7 @@ fi
 module purge
 module load Apptainer/1.2.5
 
-export CACHETMPDIR=""
+export CACHETMPDIR="/agr/persist/projects/2024_apsim_improvements/container-cache"
 
 if [ ! -d "${CACHETMPDIR}"  ]; then
 mkdir -p ${CACHETMPDIR}
