@@ -6,6 +6,9 @@ import re
 def create_lua_file(version, image_name):
     lua_content = f'''-- apsim.lua
 
+-- Load Apptainer as a dependency
+load("Apptainer")
+
 -- Module description
 whatis("Name: APSIM")
 whatis("Version: {version}")
