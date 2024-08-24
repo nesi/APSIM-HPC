@@ -38,6 +38,7 @@ end
 
 -- Create aliases for common executables (add or remove as needed)
 create_exec_alias("apsim")
+create_exec_alias("Models")
 create_exec_alias("R")
 create_exec_alias("Rscript")
 -- Add more executables as needed
