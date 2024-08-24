@@ -9,7 +9,7 @@ OUTPUT_DIR = "OutputDatabases"
 CONFIG_FILES = [f for f in os.listdir(CONFIG_DIR) if f.endswith('.txt')][:10]
 
 # Apptainer settings
-APPTAINER_IMAGE = "/agr/persist/projects/2024_apsim_improvements/APSIM-eri-mahuika/apsim-simulations/container/apsim-2024.08.7572.0.aimg"
+APPTAINER_IMAGE = "/agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.08.7572.0.aimg"
 
 rule all:
     input:
