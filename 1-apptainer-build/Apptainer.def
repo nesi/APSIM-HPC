@@ -2,18 +2,18 @@ Bootstrap: docker
 From: ubuntu:focal
 
 %arguments
-    TAG=
+    TAG=7572
 
 %environment
-	export YEAR.MONTH=
-	export TAG=${TAG}
+	export YEAR.MONTH=2024.08
+	export TAG=7572
 	export VERSION=${YEAR.MONTH}.${TAG}.0
 	
 %labels
 Maintainer Nesi-AgR
 
 %setup
-  curl --silent -o ${SINGULARITY_ROOTFS}/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+  curl --silent -o ${APPTAINER_ROOTFS}/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 
 %post
   export DEBIAN_FRONTEND=noninteractive
@@ -52,3 +52,5 @@ Maintainer Nesi-AgR
 %environment
     # Set the R environment variables if needed
     export R_LIBS_USER=/usr/local/lib/R/site-library
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
