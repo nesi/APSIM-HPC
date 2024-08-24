@@ -20,13 +20,20 @@ fi
 module purge
 module load Apptainer/1.2.5
 
-#set cache and tmpdir to nobackup. Otherwise, /home will be used by default which is not ideal due to it's 20GB strict quota
-export APPTAINER_CACHEDIR="../../container-cache/"
-export APPTAINER_TMPDIR="../../container-cache/"
+export CACHETMPDIR=""
 
-if [ ! -d "${APPTAINER_CACHEDIR}" ]; then
-mkdir -p ${APPTAINER_CACHEDIR}
-fi
+if [ ! -d "${CACHETMPDIR}"  ]; then
+mkdir -p ${CACHETMPDIR}
+fi 
+
+export TMPDIR=${CACHETMPDIR}
+mkdir -p $TMPDIR
+export TMPDIR
+
+
+#set cache and tmpdir to nobackup. Otherwise, /home will be used by default which is not ideal due to it's 20GB strict quota
+export APPTAINER_CACHEDIR=${CACHETMPDIR}
+export APPTAINER_TMPDIR=${CACHETMPDIR}
 
 #following directive (setfacl) is a unique requirement to nobackup (GPFS) filesystem
 setfacl -b "$APPTAINER_TMPDIR"
@@ -35,4 +42,4 @@ setfacl -b "$APPTAINER_TMPDIR"
 unset APPTAINER_BIND
 
 
-apptainer build --force --fakeroot ${IMAGE_PATH}/apsim-${APSIM_VERSION}.aimg Apptainer.def
+apptainer build --warn-unused-build-args --force --fakeroot ${IMAGE_PATH}/apsim-${APSIM_VERSION}.aimg Apptainer.def
