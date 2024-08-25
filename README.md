@@ -37,6 +37,8 @@ We are using  a relative path as defined in `build-container.def`
 ```bash
 13	export IMAGE_PATH="../../apsim-simulations/container/"
 ```
+[apptainer-build.webm](https://github.com/user-attachments/assets/4eb49012-18a6-4af0-b1e9-e556af8feb9f)
+
 
 # 2-apsim-module
 
