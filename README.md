@@ -5,7 +5,7 @@ Deploy APSIM on eRI and Mahuika clusters
 
 
 <details>
-<summary>Notes on how the config files were generated</summary>
+<summary>June: Notes on how the config files were generated</summary>
 
 * Extract SoilNames from CSV with `SoilNames <- as.vector(unlist(read.csv("SubsetSoilName.csv"))`
 * R script generate the config file/s ( one config file per Soil sample  per Weather file)
