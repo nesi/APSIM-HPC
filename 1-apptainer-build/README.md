@@ -17,5 +17,4 @@ We are using  a relative path as defined in `build-container.def`
 13	export IMAGE_PATH="../../apsim-simulations/container/"
 ```
 
-https://github.com/user-attachments/assets/8b6ac22b-8bb5-4981-be46-a0ae2dc7c1b5
-
+[apptainer-build.webm](https://github.com/user-attachments/assets/a342fcd4-55e9-4615-896b-7eac46368e84)
