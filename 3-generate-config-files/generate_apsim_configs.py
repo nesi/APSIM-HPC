@@ -19,7 +19,7 @@ def generate_config_files(soil_names_file, weather_dir, base_config_file, output
     # Generate configurations
     for soil_name, weather_file in itertools.product(soil_names, weather_files):
         # Replace placeholders in the config
-        config = base_config.replace('WeatherFilename', weather_file)
+        config = base_config.replace('WeatherFileName', weather_file)
         config = config.replace('SoilName', soil_name)
 
         # Generate output filename
