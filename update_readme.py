@@ -30,8 +30,16 @@ def update_main_readme(repo_path):
         with open(main_readme_path, 'r') as f:
             existing_content = f.read()
     
-    # Append the consolidated content to the existing content
-    full_content = existing_content + ''.join(consolidated_content)
+    # Find the position where the subdirectory content starts
+    start_marker = "\n\n# "
+    start_index = existing_content.find(start_marker)
+    
+    if start_index == -1:
+        # If no subdirectory content exists, append the new content
+        full_content = existing_content + ''.join(consolidated_content)
+    else:
+        # If subdirectory content exists, replace it with the new content
+        full_content = existing_content[:start_index] + ''.join(consolidated_content)
     
     # Write the full content back to the main README.md
     with open(main_readme_path, 'w') as f:
