@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 #SBATCH --job-name=apsim_models
 #SBATCH --output=slurmlogs/%A_%a.out
