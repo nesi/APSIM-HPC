@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -e
+
 #SBATCH --job-name=apsim_snake
 #SBATCH --output=slurmlogs/snakemake_%j.out
 #SBATCH --time=04:00:00
