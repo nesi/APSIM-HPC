@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#below is to make sure we can reover the absolute path to container image
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+IMAGE_PATH="$(cd "${SCRIPT_DIR}/../../apsim-simulations/container" && pwd)"
+
 echo "$(tput setaf 2)Starting APSIM Apptainer build process. Please provide the Release/Version$(tput sgr0)"
 echo ""
 echo "APSIM releases are in the format YYYY.MM.TAG.0 ( For an example, 2024.07.7572.0)" 
@@ -86,6 +90,9 @@ if [[ ${submit_job,,} == "yes" ]]; then
         # Submit the job with milan partition
         sbatch --partition=milan build-container.slurm
         echo "Container build job submitted to milan partition on mahuika."
+
+        # Add this line to echo the absolute .aimg file path
+	echo "$(tput setaf 3)Full path to container image is (check once the build was completed)$(tput sgr0): ${IMAGE_PATH}/apsim-${VERSION}.aimg"
     elif [[ ${system,,} == "eri" ]]; then
         sed -i 's|^export CACHETMPDIR=.*|export CACHETMPDIR="/agr/persist/projects/2024_apsim_improvements/container-cache"|' build-container.slurm
         echo "CACHETMPDIR set for eRI."
@@ -93,6 +100,9 @@ if [[ ${submit_job,,} == "yes" ]]; then
         # Submit the job without specifying partition
         sbatch build-container.slurm
         echo "Container build job submitted on eRI."
+
+        #Add this line to echo the absolute .aimg file path
+	echo "$(tput setaf 3)Full path to container image is (check once the build was completed)$(tput sgr0): ${IMAGE_PATH}/apsim-${VERSION}.aimg"
     else
         echo "Invalid system specified. Please set CACHETMPDIR manually."
         exit 1
@@ -104,5 +114,6 @@ fi
 echo ""
 
 echo "Average build time of the container is 30 minutes."
+
 
 
