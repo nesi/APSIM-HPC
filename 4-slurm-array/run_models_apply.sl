@@ -2,7 +2,7 @@
 
 #SBATCH --job-name=apsim_models
 #SBATCH --output=slurmlogs/%A_%a.out
-#SBATCH --array=1-10
+#SBATCH --array=1-10    #This will run  10 array tasks. If you want to control how many tasks should be "RUNNING" at any given time, use Slurm throttle with % .i.e. 1-10%5 will run 5
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 #SBATCH --time=02:00:00
