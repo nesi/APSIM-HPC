@@ -54,3 +54,6 @@ else
     echo "Version verification failed: expected $APSIM_VERSION, got $BUILT_VERSION"
     exit 1
 fi
+
+#run the cleanup script at the end
+./clean.sh
