@@ -1,3 +1,5 @@
+## Use `generate_apsim_configs.R` to generate the Config files
+
 ### `generate_apsim_configs.py` script does the following:
 
 1. reads soil names from the `CSV` file.
