@@ -13,7 +13,7 @@ os.makedirs(passed_dir, exist_ok=True)
 os.makedirs(failed_dir, exist_ok=True)
 
 # Size threshold in bytes (20MB = 20 * 1024 * 1024 bytes)
-size_threshold = 20 * 1024 * 1024
+size_threshold = 1 * 1024 * 1024
 
 # Iterate through files in the source directory
 for filename in os.listdir(source_dir):
