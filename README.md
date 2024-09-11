@@ -37,7 +37,8 @@ We are using  a relative path as defined in `build-container.def`
 ```bash
 13	export IMAGE_PATH="../../apsim-simulations/container/"
 ```
-[apptainer-build.webm](https://github.com/user-attachments/assets/4eb49012-18a6-4af0-b1e9-e556af8feb9f)
+
+[apptainer-build.webm](https://github.com/user-attachments/assets/a342fcd4-55e9-4615-896b-7eac46368e84)
 
 
 # 2-apsim-module
@@ -78,6 +79,8 @@ module load APSIM/2024.08.7572.0
 
 # 3-generate-config-files
 
+## Use `generate_apsim_configs.R` to generate the Config files
+
 ### `generate_apsim_configs.py` script does the following:
 
 1. reads soil names from the `CSV` file.
@@ -96,7 +99,53 @@ module load APSIM/2024.08.7572.0
 
 >This script will generate a separate config file for each combination of soil name and weather file, naming each file appropriately and placing it in the specified output directory, `ConfigFiles`
 
-# 5-snakemake
+
+# 4-create-apsimx-files
+
+## Generate .apsimx and .db placeholder files from Config.txt files
+
+1. Make sure to check the container image vesion (.aimg file) and double the name of the ExampleConfig file ( template has `ExampleConfig.txt` )
+3. `#SBATCH --time` variable will require revision based on the number of Config files. It takes ~25seconds per file
+2. Then submit the Slurm script with `sbatch create_apsimx.sl`
+   - This is a serial process  due to https://github.com/DininduSenanayake/APSIM-eri-mahuika/issues/31
+
+### Note on `if` `else` statement
+
+`if [ -f "$file" ] && [ "$file" != "ExampleConfig.txt" ]; then:`
+
+a. `[ -f "$file" ]`: Checks if the current `$file` is a regular file (not a directory or other special file).
+b. `[ "$file" != "ExampleConfig.txt" ]`: Checks if the current `$file` is not named `"ExampleConfig.txt"`.
+
+Both conditions must be true for the code inside the if block to execute.
+
+# 5-slurm-array
+
+## Auto-generate the `#SBATCH --array` variable and Submit the Slurm array 
+
+1. Run `count_apsimxfiles_and_array.sh` script first which will generate the `#SBATCH --array` variable with the number of array tasks based on the number of Config files ( and .db placeholder files)
+2. Then submit the array script with `sbatch array_create_db_files.sl`
+
+# 6-db-file-sorter
+
+### Sort .db files based on file size
+
+`db-file-sort.py` does the following
+
+1. It sets up the source directory and creates PASSED and FAILED directories if they don't exist.
+2. It defines the size threshold as 20MB (converted to bytes).
+3. terates through all files in the source directory.
+4. For each .db file, it checks the file size:
+
+   - If the size is greater than 20MB, it moves the file to the `PASSED` directory.
+   - If the size is less than or equal to 20MB, it moves the file to the `FAILED` directory.
+5. It prints a message for each file moved and a completion message at the end.
+
+
+To use this script:
+
+* Replace `source_dir = '.'` with the actual path to your directory containing the .db files.
+
+# 7-snakemake
 
 #### `.slurm` script in this directory and the one in `../4-slurm-array` will:
 
@@ -112,6 +161,4 @@ To load the database files in Python later, we can use the "database_list.txt" f
 with open('OutputDatabases/database_list.txt', 'r') as f:
     database_files = [line.strip() for line in f]
 ```
-
-
 
