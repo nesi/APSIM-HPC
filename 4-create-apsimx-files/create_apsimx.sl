@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 #SBATCH --job-name=apsim_models
-#SBATCH --output=slurmlogs/%A_%a.out
+#SBATCH --output=slurmlogs/%j.out
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 #SBATCH --time=00:45:00
