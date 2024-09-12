@@ -1,6 +1,12 @@
 ## Use `generate_apsim_configs.R` to generate the Config files
 
-### `generate_apsim_configs.py` script does the following:
+>This script will generate a separate config file for each combination of soil name and weather file, naming each file appropriately and placing it in the specified output directory, `ConfigFiles`
+
+
+
+<details>
+
+<summary> BUG  `generate_apsim_configs.py` script does the following</summary>
 
 1. reads soil names from the `CSV` file.
 2. gets all `.met` files from the **/Weather** directory.
@@ -15,5 +21,5 @@
 1. Make sure you have the SubsetSoilName.csv, Weather directory with .met files, and ExampleConfig.txt in the same directory as the script (or adjust the paths in the script).
 2. Create a directory named `ConfigFiles` for the output (or change the output_dir in the script).
 3. `./generate_apsim_configs.py`
+</details>
 
->This script will generate a separate config file for each combination of soil name and weather file, naming each file appropriately and placing it in the specified output directory, `ConfigFiles`
