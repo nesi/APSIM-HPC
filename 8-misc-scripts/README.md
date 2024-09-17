@@ -1,4 +1,4 @@
-## `create_mock_db.file`
+## `create_mock_db_files.sh`
 
 Default version of this script will:
 
