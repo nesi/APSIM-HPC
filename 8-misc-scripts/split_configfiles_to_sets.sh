@@ -44,3 +44,15 @@ echo "Files in set-1: $(ls set-1 | wc -l)"
 echo "Files in set-2: $(ls set-2 | wc -l)"
 echo "Files in set-3: $(ls set-3 | wc -l)"
 echo "Files in set-4: $(ls set-4 | wc -l)"
+
+
+# Copy .met and .apsimx files to each set directory
+echo "Copying .met and .apsimx files to each set directory..."
+for set in {1..4}; do
+    cp *.met "set-$set/"
+    cp *.apsimx "set-$set/"
+done
+
+echo "Copying complete."
+echo ".met files copied to each set: $(ls *.met | wc -l)"
+echo ".apsimx files copied to each set: $(ls *.apsimx | wc -l)"
