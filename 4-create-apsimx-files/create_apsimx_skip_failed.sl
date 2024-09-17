@@ -15,8 +15,8 @@ mkdir -p FAILED
 
 #Purpose of this counter is to allow ten consecutive failures without killing the for loop
 #Reason for failures were as mentioned in this gh issue https://github.com/DininduSenanayake/APSIM-eri-mahuika/issues/35
-#Expected number of consecutive failures is [number of  met files]+1 
-#adjust the 'max_consecutive_failures' to fit above requirement
+#Expected number of consecutive failures per sample is equivalent to number of .met weather files
+#Therefore, we recommend `max_consecutive_failures` = [ number of weather files + 1 ]
 consecutive_failures=0
 max_consecutive_failures=10
 
