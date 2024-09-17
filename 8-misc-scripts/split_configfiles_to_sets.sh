@@ -6,6 +6,12 @@
 #One the split is done, make sure to copy the .met files and .apsimx files to each directory
 
 
+# Function to display progress message
+show_progress() {
+    local message="$1"
+    echo -ne "\r$message..."
+}
+
 # Create the directories
 mkdir -p set-1 set-2 set-3 set-4
 
@@ -24,8 +30,11 @@ move_files_to_set() {
     local end_index=$3
     for ((i=start_index; i<end_index; i++)); do
         mv "${txt_files[i]}" "set-$set_number/"
+        show_progress "Splitting in Progress"
     done
 }
+
+echo "Starting to split files..."
 
 # Move files to each set
 start_index=0
@@ -39,20 +48,20 @@ for set in {1..4}; do
     start_index=$end_index
 done
 
-echo "Split complete."
+echo -e "\nSplit complete."
 echo "Files in set-1: $(ls set-1 | wc -l)"
 echo "Files in set-2: $(ls set-2 | wc -l)"
 echo "Files in set-3: $(ls set-3 | wc -l)"
 echo "Files in set-4: $(ls set-4 | wc -l)"
-
 
 # Copy .met and .apsimx files to each set directory
 echo "Copying .met and .apsimx files to each set directory..."
 for set in {1..4}; do
     cp *.met "set-$set/"
     cp *.apsimx "set-$set/"
+    show_progress "Copying files to set-$set"
 done
 
-echo "Copying complete."
+echo -e "\nCopying complete."
 echo ".met files copied to each set: $(ls *.met | wc -l)"
 echo ".apsimx files copied to each set: $(ls *.apsimx | wc -l)"
