@@ -12,8 +12,10 @@ show_progress() {
     echo -ne "\r$message..."
 }
 
-# Create the directories
-mkdir -p set-1 set-2 set-3 set-4
+# Create the directories , set-1, set-2,etc and slurmlogs directory inside each of those to host standard out/err
+# Latter is due to https://github.com/DininduSenanayake/APSIM-eri-mahuika/issues/43. We can remove the requirement
+# in few years as older Slurm versions will be deprecated
+mkdir -p set-{1..4}/slurmlogs
 
 # Get all .txt files. Expect the .txt files to be in the current working directory
 txt_files=(*.txt)
