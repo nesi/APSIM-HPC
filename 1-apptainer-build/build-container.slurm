@@ -10,7 +10,7 @@
 export APSIM_VERSION=""
 
 #define paths for definition file, where the image should be stored
-export IMAGE_PATH="../../apsim-simulations/container/"
+export IMAGE_PATH="../../apsim-simulations-20240918s/container/"
 
 if [ ! -d "${IMAGE_PATH}" ]; then
 mkdir -p ${IMAGE_PATH}
