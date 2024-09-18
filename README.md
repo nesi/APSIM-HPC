@@ -108,7 +108,14 @@ module load APSIM/2024.08.7572.0
 
 
 
-# 4-create-apsimx-files
+# 4-split-configtxt-files-to-sets
+
+## `split_configfiles_to_sets.sh`
+
+Default setting of this script will split .txt files in the current working directory to four separate directories, `set-1`, `set-2` , `set-3` and `set-4`
+
+
+# 5-create-apsimx-files
 
 ## Generate .apsimx and .db placeholder files from Config.txt files
 
@@ -129,14 +136,14 @@ b. `[ "$file" != "ExampleConfig.txt" ]`: Checks if the current `$file` is not na
 
 Both conditions must be true for the code inside the if block to execute.
 
-# 5-slurm-array
+# 6-slurm-array
 
 ## Auto-generate the `#SBATCH --array` variable and Submit the Slurm array 
 
 1. Run `count_apsimxfiles_and_array.sh` script first which will generate the `#SBATCH --array` variable with the number of array tasks based on the number of Config files ( and .db placeholder files). Copy and paste that variable to `array_create_db_files.sl` Slurm variables header section
 2. Then submit the array script with `sbatch array_create_db_files.sl`
 
-# 6-db-file-sorter
+# 7-db-file-sorter
 
 ### Sort .db files based on file size
 
@@ -156,7 +163,7 @@ To use this script:
 
 * Replace `source_dir = '.'` in line 7 with the actual path to your directory containing the .db files.
 
-# 7-snakemake
+# 8-snakemake
 
 #### `.slurm` script in this directory and the one in `../4-slurm-array` will:
 
@@ -175,7 +182,7 @@ with open('OutputDatabases/database_list.txt', 'r') as f:
 
 
 
-# 8-misc-scripts
+# 9-misc-scripts
 
 ## `create_mock_db_files.sh`
 
@@ -243,6 +250,3 @@ $ $ find ./ -name "*.db" -type f -exec du -h {} + | sort -rh
 ```
 </details>
 
-## `split_configfiles_to_sets.sh`
-
-Default setting of this script will split .txt files in the current working directory to four separate directories, `set-1`, `set-2` , `set-3` and `set-4`
