@@ -81,7 +81,15 @@ module load APSIM/2024.08.7572.0
 
 ## Use `generate_apsim_configs.R` to generate the Config files
 
-### `generate_apsim_configs.py` script does the following:
+>This script will generate a separate config file for each combination of soil name and weather file, naming each file appropriately and placing it in the specified output directory, `ConfigFiles`
+
+
+<br>
+
+
+<details>
+
+<summary> BUG TO BE FIXED : `generate_apsim_configs.py` which is a backup to .R script but it is buggy at the moment</summary>
 
 1. reads soil names from the `CSV` file.
 2. gets all `.met` files from the **/Weather** directory.
@@ -96,18 +104,21 @@ module load APSIM/2024.08.7572.0
 1. Make sure you have the SubsetSoilName.csv, Weather directory with .met files, and ExampleConfig.txt in the same directory as the script (or adjust the paths in the script).
 2. Create a directory named `ConfigFiles` for the output (or change the output_dir in the script).
 3. `./generate_apsim_configs.py`
+</details>
 
->This script will generate a separate config file for each combination of soil name and weather file, naming each file appropriately and placing it in the specified output directory, `ConfigFiles`
 
 
 # 4-create-apsimx-files
 
 ## Generate .apsimx and .db placeholder files from Config.txt files
 
-1. Make sure to check the container image vesion (.aimg file) and double the name of the ExampleConfig file ( template has `ExampleConfig.txt` )
-3. `#SBATCH --time` variable will require revision based on the number of Config files. It takes ~25seconds per file
-2. Then submit the Slurm script with `sbatch create_apsimx.sl`
+1. Make sure to check the container image vesion (.aimg file) and double check the name of the ExampleConfig file ( template has `ExampleConfig.txt` )
+3. `#SBATCH --time` variable will require revision based on the number of Config files. It takes **~25seconds** per file
+2. Then submit the Slurm script with `sbatch create_apsimx_skip_failed.sl`
    - This is a serial process  due to https://github.com/DininduSenanayake/APSIM-eri-mahuika/issues/31
+   - Refer to line 16-21 on the slurm script and adjust `max_consecutive_failures` to fit the following requirement
+      - Expected number of consecutive failures *per* Soil Sample is equilvanet to number of .met weather files. Therefore, we recommend `max_consecutive_failures` = [ number of weather files + 1 ]
+      - Reason for this implementation was discussed in https://github.com/DininduSenanayake/APSIM-eri-mahuika/issues/35
 
 ### Note on `if` `else` statement
 
@@ -122,7 +133,7 @@ Both conditions must be true for the code inside the if block to execute.
 
 ## Auto-generate the `#SBATCH --array` variable and Submit the Slurm array 
 
-1. Run `count_apsimxfiles_and_array.sh` script first which will generate the `#SBATCH --array` variable with the number of array tasks based on the number of Config files ( and .db placeholder files)
+1. Run `count_apsimxfiles_and_array.sh` script first which will generate the `#SBATCH --array` variable with the number of array tasks based on the number of Config files ( and .db placeholder files). Copy and paste that variable to `array_create_db_files.sl` Slurm variables header section
 2. Then submit the array script with `sbatch array_create_db_files.sl`
 
 # 6-db-file-sorter
@@ -131,19 +142,19 @@ Both conditions must be true for the code inside the if block to execute.
 
 `db-file-sort.py` does the following
 
-1. It sets up the source directory and creates PASSED and FAILED directories if they don't exist.
-2. It defines the size threshold as 20MB (converted to bytes).
+1. It sets up the source directory and creates `PASSED` and `FAILED` directories if they don't exist.
+2. It defines the size threshold as 1 MB `size_threshold = 1 * 1024 * 1024` (converted to bytes). 
 3. terates through all files in the source directory.
 4. For each .db file, it checks the file size:
 
-   - If the size is greater than 20MB, it moves the file to the `PASSED` directory.
-   - If the size is less than or equal to 20MB, it moves the file to the `FAILED` directory.
+   - If the size is greater than 1MB, it moves the file to the `PASSED` directory.
+   - If the size is less than or equal to 1MB, it moves the file to the `FAILED` directory.
 5. It prints a message for each file moved and a completion message at the end.
 
 
 To use this script:
 
-* Replace `source_dir = '.'` with the actual path to your directory containing the .db files.
+* Replace `source_dir = '.'` in line 7 with the actual path to your directory containing the .db files.
 
 # 7-snakemake
 
@@ -162,3 +173,76 @@ with open('OutputDatabases/database_list.txt', 'r') as f:
     database_files = [line.strip() for line in f]
 ```
 
+
+
+# 8-misc-scripts
+
+## `create_mock_db_files.sh`
+
+Default version of this script will:
+
+- Create 5 files with names like *large_1.db, large_2.db*, etc., each between 21MB and 50MB in size.
+- Create 5 files with names like *small_1.db, small_2.db*, etc., each between 1MB and 19MB in size.
+- Use random data to fill the files.
+- Show a progress bar for each file creation.
+
+Please note:
+
+- This script uses `/dev/urandom` as a source of random data, which might be slow for creating large files. For faster (but less random) file creation, you could replace `/dev/urandom` with `/dev/zero`.
+- The exact sizes will vary each time you run the script due to the use of random numbers.
+- The script will create files in the current directory.
+
+<details>
+</summary>Example</summary>
+```bash
+$ ./create_db_files.sh 
+46+0 records in
+46+0 records out
+48234496 bytes (48 MB) copied, 0.330022 s, 146 MB/s
+43+0 records in
+43+0 records out
+45088768 bytes (45 MB) copied, 0.279238 s, 161 MB/s
+44+0 records in
+44+0 records out
+46137344 bytes (46 MB) copied, 0.26549 s, 174 MB/s
+49+0 records in
+49+0 records out
+51380224 bytes (51 MB) copied, 0.335017 s, 153 MB/s
+27+0 records in
+27+0 records out
+28311552 bytes (28 MB) copied, 0.167217 s, 169 MB/s
+10+0 records in
+10+0 records out
+10485760 bytes (10 MB) copied, 0.0601622 s, 174 MB/s
+13+0 records in
+13+0 records out
+13631488 bytes (14 MB) copied, 0.0829061 s, 164 MB/s
+5+0 records in
+5+0 records out
+5242880 bytes (5.2 MB) copied, 0.0304713 s, 172 MB/s
+3+0 records in
+3+0 records out
+3145728 bytes (3.1 MB) copied, 0.0186602 s, 169 MB/s
+11+0 records in
+11+0 records out
+11534336 bytes (12 MB) copied, 0.0661401 s, 174 MB/s
+File creation completed.
+```
+```bash
+$ $ find ./ -name "*.db" -type f -exec du -h {} + | sort -rh
+49M	./large_4.db
+46M	./large_1.db
+44M	./large_3.db
+43M	./large_2.db
+27M	./large_5.db
+13M	./small_2.db
+11M	./small_5.db
+10M	./small_1.db
+5.0M	./small_3.db
+3.0M	./small_4.db
+```
+</details>
+
+## `split_configfiles_to_sets.sh`
+
+Default setting of this script will split .txt files in the current working directory to four separate directories, `set-1`, `set-2` , `set-3` and `set-4`
