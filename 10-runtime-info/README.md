@@ -1,7 +1,7 @@
 ## Runtime (seconds) for cpus  4 - 32
 
 <center>
-<img src="./cpu-vs-runtime/runtime_vs_cpu1.png" alt="Alt text" width="700>
+<img src="./cpu-vs-runtime/runtime_vs_cpu1.png" alt="Alt text" width="700">
 </center>
 
 <br>
