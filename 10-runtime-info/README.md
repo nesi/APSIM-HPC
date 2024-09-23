@@ -4,6 +4,8 @@
 <img src="./cpu-vs-runtime/runtime_vs_cpu1.png" alt="Alt text" width="700>
 </center>
 
+<br>
+
 <details>
 <summary>Data and R script to generate plots</summary>
 
@@ -16,6 +18,7 @@ cpus,Mahuika,eRI
 20C,52,58
 24C,56,54
 ```
+
 ```r
 # Load required libraries
 library(ggplot2)
