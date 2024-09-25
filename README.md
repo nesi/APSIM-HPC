@@ -1,7 +1,5 @@
-# APSIM-eri-mahuika
-Deploy APSIM on eRI and Mahuika clusters
-
-
+# APSIM-HPC
+Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info/) on high performance computing clusters. 
 
 
 <details>
@@ -17,7 +15,7 @@ Deploy APSIM on eRI and Mahuika clusters
 </details>
 
 
-# 1-apptainer-build
+# 01-apptainer-build
 
 ### How to launch the apptainer build
 
@@ -41,7 +39,7 @@ We are using  a relative path as defined in `build-container.def`
 [apptainer-build.webm](https://github.com/user-attachments/assets/a342fcd4-55e9-4615-896b-7eac46368e84)
 
 
-# 2-apsim-module
+# 02-apsim-module
 
 ### Generate the .lua file
 `generate_lua.py` script does the following:
@@ -77,7 +75,7 @@ module load APSIM/2024.08.7572.0
 
 
 
-# 3-generate-config-files
+# 03-generate-config-files
 
 ## Use `generate_apsim_configs.R` to generate the Config files
 
@@ -108,14 +106,14 @@ module load APSIM/2024.08.7572.0
 
 
 
-# 4-split-configtxt-files-to-sets
+# 04-split-configtxt-files-to-sets
 
 ## `split_configfiles_to_sets.sh`
 
 Default setting of this script will split .txt files in the current working directory to four separate directories, `set-1`, `set-2` , `set-3` and `set-4`
 
 
-# 5-create-apsimx-files
+# 05-create-apsimx-files
 
 ## Generate .apsimx and .db placeholder files from Config.txt files
 
@@ -159,14 +157,14 @@ b. `[ "$file" != "ExampleConfig.txt" ]`: Checks if the current `$file` is not na
 Both conditions must be true for the code inside the if block to execute.
 
 
-# 6-slurm-array
+# 06-slurm-array
 
 ## Auto-generate the `#SBATCH --array` variable and Submit the Slurm array 
 
 1. Run `count_apsimxfiles_and_array.sh` script first which will generate the `#SBATCH --array` variable with the number of array tasks based on the number of Config files ( and .db placeholder files). Copy and paste that variable to `array_create_db_files.sl` Slurm variables header section
 2. Then submit the array script with `sbatch array_create_db_files.sl`
 
-# 7-db-file-sorter
+# 07-db-file-sorter
 
 ### Sort .db files based on file size
 
@@ -186,7 +184,7 @@ To use this script:
 
 * Replace `source_dir = '.'` in line 7 with the actual path to your directory containing the .db files.
 
-# 8-snakemake
+# 08-snakemake
 
 #### `.slurm` script in this directory and the one in `../4-slurm-array` will:
 
@@ -205,7 +203,7 @@ with open('OutputDatabases/database_list.txt', 'r') as f:
 
 
 
-# 9-misc-scripts
+# 09-misc-scripts
 
 ## `create_mock_db_files.sh`
 
@@ -272,4 +270,6 @@ $ $ find ./ -name "*.db" -type f -exec du -h {} + | sort -rh
 3.0M	./small_4.db
 ```
 </details>
+
+
 
