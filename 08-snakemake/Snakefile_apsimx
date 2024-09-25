@@ -1,0 +1,44 @@
+import os
+from glob import glob
+
+config = {
+    "apptainer_bind": "/agr/scratch,/agr/persist",
+    "apptainer_image": "/agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.09.7579.0.aimg",
+    "excluded_apsimx_files": ["2023-10-09_MasterSoilApsimLibrary.apsimx", "LargerExample.apsimx"],
+    "slurm_logdir": "slurmlogs"
+}
+
+apsimx_files = [f for f in glob("*.apsimx") if f not in config["excluded_apsimx_files"]]
+
+rule all:
+    input:
+        config["slurm_logdir"],
+        expand("{file}.processed", file=[os.path.splitext(f)[0] for f in apsimx_files])
+
+rule process_apsimx:
+    input:
+        apsimx = "{file}.apsimx",
+        db = "{file}.db"
+    output:
+        "{file}.processed"
+    params:
+        logfile = lambda wildcards, output: f"{config['slurm_logdir']}/{wildcards.file}_%j.out"
+    resources:
+        mem_mb = 8000,
+        time = "00:10:00"
+    threads: 12
+    shell:
+        """
+        #SBATCH --output={params.logfile}
+
+        module load Apptainer
+        export APPTAINER_BIND="{config[apptainer_bind]}"
+        apptainer exec {config[apptainer_image]} Models {input.apsimx}
+        touch {output}
+        """
+
+rule create_logdir:
+    output:
+        directory(config["slurm_logdir"])
+    shell:
+        "mkdir -p {output}"
