@@ -1,11 +1,13 @@
 import os
+import shutil
 from glob import glob
 
 config = {
     "apptainer_bind": "/agr/scratch,/agr/persist",
     "apptainer_image": "/agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.09.7579.0.aimg",
     "excluded_apsimx_files": ["2023-10-09_MasterSoilApsimLibrary.apsimx", "LargerExample.apsimx"],
-    "slurm_logdir": "slurmlogs"
+    "slurm_logdir": "slurmlogs",
+    "size_threshold": 1 * 1024 * 1024  # 1MB in bytes
 }
 
 apsimx_files = [f for f in glob("*.apsimx") if f not in config["excluded_apsimx_files"]]
@@ -13,7 +15,8 @@ apsimx_files = [f for f in glob("*.apsimx") if f not in config["excluded_apsimx_
 rule all:
     input:
         config["slurm_logdir"],
-        expand("{file}.processed", file=[os.path.splitext(f)[0] for f in apsimx_files])
+        expand("{file}.processed", file=[os.path.splitext(f)[0] for f in apsimx_files]),
+        "db_files_sorted"
 
 rule process_apsimx:
     input:
@@ -42,3 +45,32 @@ rule create_logdir:
         directory(config["slurm_logdir"])
     shell:
         "mkdir -p {output}"
+
+rule sort_db_files:
+    input:
+        expand("{file}.processed", file=[os.path.splitext(f)[0] for f in apsimx_files])
+    output:
+        "db_files_sorted"
+    run:
+        passed_dir = "PASSED"
+        failed_dir = "FAILED"
+        os.makedirs(passed_dir, exist_ok=True)
+        os.makedirs(failed_dir, exist_ok=True)
+
+        for filename in os.listdir('.'):
+            if filename.endswith('.db'):
+                file_path = os.path.join('.', filename)
+                file_size = os.path.getsize(file_path)
+                
+                if file_size > config["size_threshold"]:
+                    destination = os.path.join(passed_dir, filename)
+                else:
+                    destination = os.path.join(failed_dir, filename)
+                
+                shutil.move(file_path, destination)
+                print(f"Moved {filename} to {os.path.dirname(destination)}")
+
+        with open(output[0], 'w') as f:
+            f.write("DB files sorted.")
+
+        print("File sorting complete.")
