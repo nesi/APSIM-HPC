@@ -1,0 +1,76 @@
+import os
+import shutil
+from glob import glob
+
+config = {
+    "apptainer_bind": "/agr/scratch,/agr/persist",
+    "apptainer_image": "/agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.09.7579.0.aimg",
+    "excluded_apsimx_files": ["2023-10-09_MasterSoilApsimLibrary.apsimx", "LargerExample.apsimx"],
+    "slurm_logdir": "slurmlogs",
+    "size_threshold": 1 * 1024 * 1024  # 1MB in bytes
+}
+
+apsimx_files = [f for f in glob("*.apsimx") if f not in config["excluded_apsimx_files"]]
+
+rule all:
+    input:
+        config["slurm_logdir"],
+        expand("{file}.processed", file=[os.path.splitext(f)[0] for f in apsimx_files]),
+        "db_files_sorted"
+
+rule process_apsimx:
+    input:
+        apsimx = "{file}.apsimx",
+        db = "{file}.db"
+    output:
+        "{file}.processed"
+    params:
+        logfile = lambda wildcards, output: f"{config['slurm_logdir']}/{wildcards.file}_%j.out"
+    resources:
+        mem_mb = 8000,
+        time = "00:10:00"
+    threads: 12
+    shell:
+        """
+        #SBATCH --output={params.logfile}
+
+        module load Apptainer
+        export APPTAINER_BIND="{config[apptainer_bind]}"
+        apptainer exec {config[apptainer_image]} Models {input.apsimx}
+        touch {output}
+        """
+
+rule create_logdir:
+    output:
+        directory(config["slurm_logdir"])
+    shell:
+        "mkdir -p {output}"
+
+rule sort_db_files:
+    input:
+        expand("{file}.processed", file=[os.path.splitext(f)[0] for f in apsimx_files])
+    output:
+        "db_files_sorted"
+    run:
+        passed_dir = "PASSED"
+        failed_dir = "FAILED"
+        os.makedirs(passed_dir, exist_ok=True)
+        os.makedirs(failed_dir, exist_ok=True)
+
+        for filename in os.listdir('.'):
+            if filename.endswith('.db'):
+                file_path = os.path.join('.', filename)
+                file_size = os.path.getsize(file_path)
+                
+                if file_size > config["size_threshold"]:
+                    destination = os.path.join(passed_dir, filename)
+                else:
+                    destination = os.path.join(failed_dir, filename)
+                
+                shutil.move(file_path, destination)
+                print(f"Moved {filename} to {os.path.dirname(destination)}")
+
+        with open(output[0], 'w') as f:
+            f.write("DB files sorted.")
+
+        print("File sorting complete.")
