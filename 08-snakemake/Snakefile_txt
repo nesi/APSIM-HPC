@@ -14,8 +14,7 @@ txt_files = [f for f in glob("*.txt") if f not in config["excluded_txt_files"]]
 rule all:
     input:
         config["slurm_logdir"],
-        "txt_files_processed",
-        "apsimx_workflow_complete"
+        "txt_files_processed"
 
 rule process_txt_files:
     input:
@@ -64,14 +63,3 @@ rule create_logdir:
         directory(config["slurm_logdir"])
     shell:
         "mkdir -p {output}"
-
-rule run_apsimx_workflow:
-    input:
-        "txt_files_processed"
-    output:
-        "apsimx_workflow_complete"
-    shell:
-        """
-        snakemake -s Snakefile_apsimx --cores all
-        touch {output}
-        """
