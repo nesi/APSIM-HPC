@@ -25,6 +25,9 @@ cp 08-snakemake/Snakefile_txt "$working_dir"
 # Copy the Snakefile_apsimx
 cp 08-snakemake/Snakefile_apsimx "$working_dir"
 
+#Copy the run_snakefile.sh
+cp 08-snakemake/run_snakefile.sh "$working_dir"
+
 # Print completion message
 echo -e "\nSetup is complete. Switching to working directory now."
 
