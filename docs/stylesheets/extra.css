@@ -1,3 +1,21 @@
+.banner {
+    height: 30px;       /* Height of the banner */
+    position: sticky;   /* Follows as you scroll */
+    top: 0;             /* Absolute top of page */
+    left: 0;
+    width: 100%;
+    z-index: 1;         /* Tells the renderer "this is important", otherwise Admonition and Code Blocks will render into it */
+    text-align: center;
+    background-color: black;
+}
+
+
+:root {}
+.md-header__button.md-logo img, .md-header__button.md-logo svg {
+  height: 4rem;
+  margin: -1.1rem;
+}
+
 .magnifying-glass {
   color: #1DA1F2;
 }
