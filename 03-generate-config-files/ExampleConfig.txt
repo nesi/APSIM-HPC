@@ -1,9 +1,0 @@
-load LargerExample.apsimx
-
-[Weather].FileName = WeatherFileName.met
-add [Block] 2023-10-09_MasterSoilApsimLibrary.apsimx;[SoilName]
-delete [Block].Soil
-
-save WeatherFileName_SoilName.apsimx
-
-run
