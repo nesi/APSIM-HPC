@@ -29,10 +29,18 @@ cp 08-snakemake/Snakefile_apsimx "$working_dir"
 cp 08-snakemake/run_snakefile.sh "$working_dir"
 
 # Print completion message
-echo -e "\nSetup is complete. Switching to working directory now."
+echo -e "\nSwitching to working directory now and running generate_apsim_configs.R to create config files."
 
 # Change to the working directory
 cd "$working_dir" || exit
 
 # Print current directory to confirm
 echo -e "${GREEN}${BOLD}Current working directory: $(pwd)${NC}"
+
+
+# Execute the R script
+echo -e "${YELLOW}Generating config files and splitting into multiple sets...${NC}"
+Rscript generate_apsim_configs.R
+
+# Print completion message
+echo -e "${GREEN}${BOLD}Config files generation complete.${NC}"
