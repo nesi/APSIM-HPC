@@ -44,7 +44,11 @@ rule create_logdir:
     output:
         directory(config["slurm_logdir"])
     shell:
-        "mkdir -p {output}"
+	    """
+        mkdir -p {output}
+        mkdir -p PASSED_DB
+        mkdir -p FAILED_DB
+        """
 
 rule sort_db_files:
     input:
@@ -52,8 +56,8 @@ rule sort_db_files:
     output:
         "db_files_sorted"
     run:
-        passed_dir = "PASSED"
-        failed_dir = "FAILED"
+        passed_dir = "PASSED_DB"
+        failed_dir = "FAILED_DB"
         os.makedirs(passed_dir, exist_ok=True)
         os.makedirs(failed_dir, exist_ok=True)
 

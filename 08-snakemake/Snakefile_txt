@@ -35,7 +35,7 @@ rule process_txt_files:
         export APPTAINER_BIND="{config[apptainer_bind]}"
         export APPTAINER_CMD="apptainer exec {config[apptainer_image]}"
         
-        mkdir -p FAILED
+        mkdir -p FAILED_CONFIG
         consecutive_failures=0
         max_consecutive_failures={config[max_consecutive_failures]}
         
@@ -45,7 +45,7 @@ rule process_txt_files:
                 consecutive_failures=0
             else
                 echo "Failed to process $file"
-                mv "$file" FAILED/
+                mv "$file" FAILED_CONFIG/
                 ((consecutive_failures++))
                 
                 if [ $consecutive_failures -ge $max_consecutive_failures ]; then
