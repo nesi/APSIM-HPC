@@ -42,5 +42,16 @@ echo -e "${GREEN}${BOLD}Current working directory: $(pwd)${NC}"
 echo -e "${YELLOW}Generating config files and splitting into multiple sets...${NC}"
 Rscript generate_apsim_configs.R
 
+echo ""
+
+# Copy run_snakefile.sh to all directories starting with "Set"
+echo -e "${YELLOW}Copying run_snakefile.sh to all Set directories...${NC}"
+for dir in Set*/; do
+    if [ -d "$dir" ]; then
+        cp run_snakefile.sh "$dir"
+        echo "Copied run_snakefile.sh to $dir"
+    fi
+done
+
 # Print completion message
 echo -e "${GREEN}${BOLD}Config files generation complete.${NC}"
