@@ -27,3 +27,18 @@ else
 fi
 
 echo "All processing completed."
+
+# Check if FAILED_CONFIG is empty and FAILED_DB has at most one file
+if [ -z "$(ls -A FAILED_CONFIG 2>/dev/null)" ] && [ $(ls -1 FAILED_DB 2>/dev/null | wc -l) -le 1 ]; then
+    echo "FAILED_CONFIG is empty and FAILED_DB has at most one file. Cleaning up files..."
+    
+    # Delete files with .processed and .apsimx extensions
+    find . -maxdepth 1 -type f \( -name "*.processed" -o -name "*.apsimx" -o -name "*.txt" -o -name "*.met" \) -delete
+    
+    # Delete txt_files_processed and db_files_sorted files
+    rm -f txt_files_processed db_files_sorted
+    
+    echo "Cleanup completed."
+else
+    echo "FAILED_CONFIG is not empty or FAILED_DB has more than one file. Skipping cleanup."
+fi
