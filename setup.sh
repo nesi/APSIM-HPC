@@ -55,3 +55,25 @@ done
 
 # Print completion message
 echo -e "${GREEN}${BOLD}Config files generation complete.${NC}"
+
+echo ""
+
+# Ask if the user wants to submit the APSIM-HPC workflow
+echo -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no)${NC}"
+read -r submit_answer
+
+if [ "${submit_answer,,}" = "yes" ]; then
+    # Verify the user is in the correct directory
+    if [ "$(pwd)" != "$working_dir" ]; then
+        echo -e "${RED}Error: Not in the correct working directory. Please run the script again.${NC}"
+        exit 1
+    fi
+
+    # Execute the command to submit jobs
+    echo -e "${YELLOW}Submitting APSIM-HPC workflow jobs...${NC}"
+    find . -type d -name "Set*" -exec sh -c 'cd "{}" && nohup ./run_snakefile.sh > output.log 2>&1 &' \;
+
+    echo -e "${GREEN}${BOLD}Slurm jobs were submitted. Check the status with "squeue --me" command${NC}"
+else
+    echo -e "${YELLOW}APSIM-HPC workflow submission skipped.${NC}"
+fi
