@@ -1,11 +1,29 @@
 #!/bin/bash
 
+echo ""
+VERSION="1.4.0"  # Replace with your actual version
+UPDATE_TIME="2024-10-15"  # Replace with your actual update time
+
+TITLE_DOC=$(cat << EOF          
+          \e[44;37m             APSIM-HPC: Agricultural Production Systems               \e[0m
+          \e[44;37m              Simulator - High Performance Computing                  \e[0m
+          \e[47;32m               Author  :  AgR-NeSI                                    \e[0m
+          \e[47;32m               Version :  $VERSION                                       \e[0m
+          \e[47;32m               Update  :  $UPDATE_TIME                                  \e[0m
+EOF
+)
+
+echo -e "$TITLE_DOC"
+
 # Color codes
 YELLOW='\033[1;33m'
 GREEN='\033[1;32m'
 NC='\033[0m' # No Color
 BOLD='\033[1m'
 
+
+echo ""
+echo ""
 # Ask for the working directory
 echo -e "${YELLOW}Provide the path to working directory for apsim_simulations:${NC} \c"
 read -r working_dir
@@ -72,7 +90,7 @@ mkdir -p ~/.config/snakemake
 cp -r 08-snakemake/profiles/nesi ~/.config/snakemake/
 
 # Ask if the user wants to submit the APSIM-HPC workflow
-echo -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no)${NC}"
+echo -n -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no) : ${NC}"
 read -r submit_answer
 
 if [ "${submit_answer,,}" = "yes" ]; then
