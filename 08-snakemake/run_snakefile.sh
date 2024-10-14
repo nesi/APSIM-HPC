@@ -5,7 +5,7 @@ APSIM_JOBS=100
 
 # Run Snakefile_txt
 echo "Processing text files..."
-snakemake -s Snakefile_txt --profile slurm --jobs 1
+snakemake -s Snakefile_txt --profile nesi --jobs 1
 
 # Check if the previous command was successful
 if [ $? -eq 0 ]; then
@@ -13,7 +13,7 @@ if [ $? -eq 0 ]; then
     
     # Run Snakefile_apsimx
     echo "Processing APSIM files..."
-    snakemake -s Snakefile_apsimx --profile slurm --jobs $APSIM_JOBS
+    snakemake -s Snakefile_apsimx --profile nesi --jobs $APSIM_JOBS
     
     if [ $? -eq 0 ]; then
         echo "APSIM file processing completed successfully."

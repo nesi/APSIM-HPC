@@ -58,6 +58,10 @@ echo -e "${GREEN}${BOLD}Config files generation complete.${NC}"
 
 echo ""
 
+#Copy snakemake profile 08-snakemake/profiles to ~/.config/snakemake
+mkdir -p ~/.config/snakemake
+cp -r 08-snakemake/profiles/nesi ~/.config/snakemake/
+
 # Ask if the user wants to submit the APSIM-HPC workflow
 echo -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no)${NC}"
 read -r submit_answer
