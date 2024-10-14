@@ -90,7 +90,7 @@ mkdir -p ~/.config/snakemake
 cp -r 08-snakemake/profiles/nesi ~/.config/snakemake/
 
 # Ask if the user wants to submit the APSIM-HPC workflow
-echo -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no)${NC}"
+echo -n -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no) : ${NC}"
 read -r submit_answer
 
 if [ "${submit_answer,,}" = "yes" ]; then
