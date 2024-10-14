@@ -20,10 +20,10 @@ fi
 cp 03-generate-config-files/generate_apsim_configs.R "$working_dir"
 
 # Copy the Snakefile_txt
-cp 08-snakemake/Snakefile_txt "$working_dir"
+cp 08-snakemake/Snakefile_1 "$working_dir"
 
 # Copy the Snakefile_apsimx
-cp 08-snakemake/Snakefile_apsimx "$working_dir"
+cp 08-snakemake/Snakefile_2 "$working_dir"
 
 #Copy the run_snakefile.sh
 cp 08-snakemake/run_snakefile.sh "$working_dir"
