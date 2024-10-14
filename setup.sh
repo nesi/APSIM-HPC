@@ -58,6 +58,15 @@ echo -e "${GREEN}${BOLD}Config files generation complete.${NC}"
 
 echo ""
 
+#Load modules 
+echo -e "${YELLOW}Loading required modules and copying nesi Snakemake profile...${NC}"
+if [[ $(hostname) == *eri* ]]; then
+  module purge && module load snakemake/7.32.3-foss-2023a-Python-3.11.6 R/4.4.1-foss-2023a Graphviz/12.1.2
+elif [[ $(hostname) == *mahuika* ]]; then
+  module purge >/dev/null 2>&1 && module load snakemake/7.32.3-gimkl-2022a-Python-3.11.3 R/4.3.1-gimkl-2022a
+fi
+
+
 #Copy snakemake profile 08-snakemake/profiles to ~/.config/snakemake
 mkdir -p ~/.config/snakemake
 cp -r 08-snakemake/profiles/nesi ~/.config/snakemake/
