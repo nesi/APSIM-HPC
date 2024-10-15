@@ -547,9 +547,25 @@
 </ol>
 </div>
 <div class="admonition rocket">
-<p class="admonition-title">Launch it with <code>source submit.sh</code></p>
+<p class="admonition-title">Launch it with the command <code>source submit.sh</code></p>
 <p>What does it do : </p>
 <p><center><a class="glightbox" href="images/workflow.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="image" src="images/workflow.png" width="500" /></a></center></p>
+<details class="clipboard-question">
+<summary>Reason for using <code>source</code> and not <code>bash</code></summary>
+<ul>
+<li>
+<p>This is do with <code>cd /working/directory</code> command within the <code>submit.sh</code> script</p>
+</li>
+<li>
+<p>When you run a script using <code>bash script.sh</code>, the script is executed in a new subshell. This means:</p>
+<ul>
+<li>A new shell process is created to run the script.</li>
+<li>Any changes to the working directory (<code>cd</code> commands) only affect this subshell.</li>
+<li>Once the script finishes, the subshell terminates, and you return to your original shell with its original working directory unchanged.</li>
+</ul>
+</li>
+</ul>
+</details>
 </div>
 
 
