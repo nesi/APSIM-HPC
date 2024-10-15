@@ -128,7 +128,9 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
 
     1. Cloned the latest version of the repo (https://github.com/nesi/APSIM-HPC.git)
     2. `03-generate-config-files/generate_apsim_configs.R` , `08-snakemake/Snakefile_1` and `08-snakemake/Snakefile_2` were updated with names of the template files,etc. 
-    3. Filenames and directory structure **were/was not** altered. 
+    3. Filenames and directory structure of the **cloned repo** **were/was not** altered.
+        - submission script relies on the relative paths and names as it is within the Github repo.
+        - If you are to change paths or names, make sure to review `submit.sh` and amend to reflect the changes.  
 
     
 !!! rocket "Launch it with the command `source submit.sh`"
