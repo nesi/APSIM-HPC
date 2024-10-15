@@ -62,7 +62,7 @@ theme:
   # Default values, taken from mkdocs_theme.yml
   language: en
   font:
-    text: Mukta
+    text: Lato
     code: Fira Code
 
 markdown_extensions:

@@ -52,7 +52,19 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
 ## 3. Update Workflow files for current simulation
 
 !!! quote ""
-    Please make sure to edit the files within the cloned repository without changing the directory structure or filenames. Final submission script relies on the existing structure and names to populate the working directory with runtime scripts.
+    Please make sure to edit the files within the cloned repository without changing the repository directory structure or filenames. Final submission script relies on the existing structure and names to populate the working directory with runtime scripts.
+
+
+### `03-generate-config-files/generate_apsim_configs.R` 
+
+* This script generates the config.txt files ( one file per soil sample per weather file)
+* It will be executed interactively than submitting as a job to scheduler ( relatively quick -  generating 10,000 files will be done within 75 seconds or so)
+* Last step of this script is to "split" those config files to multiple **Sets** (Default is 3 **Sets**)
+    - What is the purpose of this **split** ?
+        - This a pre-configuration for `08-snakemake/Snakefile_1` step. Latter process the config files and create the corresponding .apsimx files ( plus the .db placeholder files). It can not be done in parallel due to https://github.com/nesi/APSIM-HPC/issues/31. 
+        - Since the processing time per file is ~25 seconds, having all of the configfiles ( assuming there are thousands to process) in one single directory will add unreasonable runtimes. Safest ( and the easiest) soution is to split those files to multiple **Sets** ( processing within a set is still serial but it will be quicker as it will be a fraction of the total samples)
+
+
 
 !!! r-project "update `03-generate-config-files/generate_apsim_configs.R`"
 
@@ -66,6 +78,12 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
     8 ConfigTemplate <- "ExampleConfigTemplate.txt" ##Base config file
 
     11 SoilLibrary <- "my_master_soilapsim_library.apsimx" ###Change name to the soil library you are using
+    ```
+    
+    * if you would like to change the number of **Sets** from default `3`, change the value of `nSets` on line 87
+
+    ```r
+    87 SplitConfigFilesIntoSets(list.files(pattern = "ConfigFile.txt$"), nSets = 3)
     ```
 
 
