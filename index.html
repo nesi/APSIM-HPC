@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="images/icon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.8c3ca2c6.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
@@ -41,8 +41,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Mukta";--md-code-font:"Fira Code"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Lato";--md-code-font:"Fira Code"}</style>
       
     
     
@@ -340,6 +340,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="3. Update Workflow files for current simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#03-generate-config-filesgenerate_apsim_configsr" class="md-nav__link">
+    <span class="md-ellipsis">
+      03-generate-config-files/generate_apsim_configs.R
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -409,6 +424,21 @@
       3. Update Workflow files for current simulation
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="3. Update Workflow files for current simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#03-generate-config-filesgenerate_apsim_configsr" class="md-nav__link">
+    <span class="md-ellipsis">
+      03-generate-config-files/generate_apsim_configs.R
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -481,8 +511,21 @@
 <div class="admonition note"></div>
 <h2 id="3-update-workflow-files-for-current-simulation">3. Update Workflow files for current simulation<a class="headerlink" href="#3-update-workflow-files-for-current-simulation" title="Permanent link">&para;</a></h2>
 <div class="admonition quote">
-<p>Please make sure to edit the files within the cloned repository without changing the directory structure or filenames. Final submission script relies on the existing structure and names to populate the working directory with runtime scripts.</p>
+<p>Please make sure to edit the files within the cloned repository without changing the repository directory structure or filenames. Final submission script relies on the existing structure and names to populate the working directory with runtime scripts.</p>
 </div>
+<h3 id="03-generate-config-filesgenerate_apsim_configsr"><code>03-generate-config-files/generate_apsim_configs.R</code><a class="headerlink" href="#03-generate-config-filesgenerate_apsim_configsr" title="Permanent link">&para;</a></h3>
+<ul>
+<li>This script generates the config.txt files ( one file per soil sample per weather file)</li>
+<li>It will be executed interactively than submitting as a job to scheduler ( relatively quick -  generating 10,000 files will be done within 75 seconds or so)</li>
+<li>Last step of this script is to "split" those config files to multiple <strong>Sets</strong> (Default is 3 <strong>Sets</strong>)<ul>
+<li>What is the purpose of this <strong>split</strong> ?<ul>
+<li>This a pre-configuration for <code>08-snakemake/Snakefile_1</code> step. Latter process the config files and create the corresponding .apsimx files ( plus the .db placeholder files). It can not be done in parallel due to <a href="https://github.com/nesi/APSIM-HPC/issues/31">https://github.com/nesi/APSIM-HPC/issues/31</a>. </li>
+<li>Since the processing time per file is ~25 seconds, having all of the configfiles ( assuming there are thousands to process) in one single directory will add unreasonable runtimes. Safest ( and the easiest) soution is to split those files to multiple <strong>Sets</strong> ( processing within a set is still serial but it will be quicker as it will be a fraction of the total samples)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <div class="admonition r-project">
 <p class="admonition-title">update <code>03-generate-config-files/generate_apsim_configs.R</code></p>
 <p>First file to be edited is <code>03-generate-config-files/generate_apsim_configs.R</code> which will be used to generate the config.txt files</p>
@@ -494,6 +537,11 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="m">8</span><span class="w"> </span><span class="n">ConfigTemplate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;ExampleConfigTemplate.txt&quot;</span><span class="w"> </span><span class="c1">##Base config file</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="m">11</span><span class="w"> </span><span class="n">SoilLibrary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;my_master_soilapsim_library.apsimx&quot;</span><span class="w"> </span><span class="c1">###Change name to the soil library you are using</span>
+</code></pre></div>
+<ul>
+<li>if you would like to change the number of <strong>Sets</strong> from default <code>3</code>, change the value of <code>nSets</code> on line 87</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="m">87</span><span class="w"> </span><span class="nf">SplitConfigFilesIntoSets</span><span class="p">(</span><span class="nf">list.files</span><span class="p">(</span><span class="n">pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ConfigFile.txt$&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">nSets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="admonition snake">
@@ -509,13 +557,13 @@
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w">   </span><span class="m">4</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">   </span><span class="m">5</span><span class="w">     </span><span class="s2">&quot;apptainer_bind&quot;</span>:<span class="w"> </span><span class="s2">&quot;/full/filesystem&quot;</span>,
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">   </span><span class="m">6</span><span class="w">     </span><span class="s2">&quot;apptainer_image&quot;</span>:<span class="w"> </span><span class="s2">&quot;/path/to/container/image/version.aimg&quot;</span>,
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">   </span><span class="m">7</span><span class="w">     </span><span class="s2">&quot;excluded_txt_files&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;ExampleConfigTemplate.txt&quot;</span><span class="o">]</span>,
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">   </span><span class="m">8</span><span class="w">     </span><span class="s2">&quot;max_consecutive_failures&quot;</span>:<span class="w"> </span><span class="m">10</span>,
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">   </span><span class="m">9</span><span class="w">     </span><span class="s2">&quot;slurm_logdir&quot;</span>:<span class="w"> </span><span class="s2">&quot;slurmlogs&quot;</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="m">10</span><span class="w"> </span><span class="o">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">   </span><span class="m">4</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">   </span><span class="m">5</span><span class="w">     </span><span class="s2">&quot;apptainer_bind&quot;</span>:<span class="w"> </span><span class="s2">&quot;/full/filesystem&quot;</span>,
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">   </span><span class="m">6</span><span class="w">     </span><span class="s2">&quot;apptainer_image&quot;</span>:<span class="w"> </span><span class="s2">&quot;/path/to/container/image/version.aimg&quot;</span>,
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">   </span><span class="m">7</span><span class="w">     </span><span class="s2">&quot;excluded_txt_files&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;ExampleConfigTemplate.txt&quot;</span><span class="o">]</span>,
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">   </span><span class="m">8</span><span class="w">     </span><span class="s2">&quot;max_consecutive_failures&quot;</span>:<span class="w"> </span><span class="m">10</span>,
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">   </span><span class="m">9</span><span class="w">     </span><span class="s2">&quot;slurm_logdir&quot;</span>:<span class="w"> </span><span class="s2">&quot;slurmlogs&quot;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="m">10</span><span class="w"> </span><span class="o">}</span>
 </code></pre></div>
 </div>
 <div class="admonition snake">
@@ -526,13 +574,13 @@
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">   </span><span class="m">5</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">   </span><span class="m">6</span><span class="w">     </span><span class="s2">&quot;apptainer_bind&quot;</span>:<span class="w"> </span><span class="s2">&quot;/full/filesystem&quot;</span>,
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">   </span><span class="m">7</span><span class="w">     </span><span class="s2">&quot;apptainer_image&quot;</span>:<span class="w"> </span><span class="s2">&quot;/path/to/container/image/version.aimg&quot;</span>,
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">   </span><span class="m">8</span><span class="w">     </span><span class="s2">&quot;excluded_apsimx_files&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;my_master_soilapsim_library.apsimx&quot;</span>,<span class="w"> </span><span class="s2">&quot;another_soilapsim_library.apsimx&quot;</span><span class="o">]</span>,
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">   </span><span class="m">9</span><span class="w">     </span><span class="s2">&quot;slurm_logdir&quot;</span>:<span class="w"> </span><span class="s2">&quot;slurmlogs&quot;</span>,
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="m">10</span><span class="w">     </span><span class="s2">&quot;size_threshold&quot;</span>:<span class="w"> </span><span class="m">1</span><span class="w"> </span>*<span class="w"> </span><span class="m">1024</span><span class="w"> </span>*<span class="w"> </span><span class="m">1024</span><span class="w">  </span><span class="c1"># 1MB in bytes</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="m">11</span><span class="w"> </span><span class="o">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="w">   </span><span class="m">5</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">   </span><span class="m">6</span><span class="w">     </span><span class="s2">&quot;apptainer_bind&quot;</span>:<span class="w"> </span><span class="s2">&quot;/full/filesystem&quot;</span>,
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">   </span><span class="m">7</span><span class="w">     </span><span class="s2">&quot;apptainer_image&quot;</span>:<span class="w"> </span><span class="s2">&quot;/path/to/container/image/version.aimg&quot;</span>,
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">   </span><span class="m">8</span><span class="w">     </span><span class="s2">&quot;excluded_apsimx_files&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;my_master_soilapsim_library.apsimx&quot;</span>,<span class="w"> </span><span class="s2">&quot;another_soilapsim_library.apsimx&quot;</span><span class="o">]</span>,
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">   </span><span class="m">9</span><span class="w">     </span><span class="s2">&quot;slurm_logdir&quot;</span>:<span class="w"> </span><span class="s2">&quot;slurmlogs&quot;</span>,
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="m">10</span><span class="w">     </span><span class="s2">&quot;size_threshold&quot;</span>:<span class="w"> </span><span class="m">1</span><span class="w"> </span>*<span class="w"> </span><span class="m">1024</span><span class="w"> </span>*<span class="w"> </span><span class="m">1024</span><span class="w">  </span><span class="c1"># 1MB in bytes</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="m">11</span><span class="w"> </span><span class="o">}</span>
 </code></pre></div>
 </div>
 <p><br></p>
@@ -628,7 +676,7 @@
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.525ec568.min.js"></script>
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
       
         <script src="javascripts/mathjax.js"></script>
       
