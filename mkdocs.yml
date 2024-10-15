@@ -118,9 +118,10 @@ extra_javascript:
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   
+extra_css:
+  - stylesheets/extra.css
 
+  
 copyright : APSIM-HPC is licensed under a <a rel="noopener" target="_blank" href="https://github.com/nesi/APSIM-HPC/blob/docs/LICENSE">MIT License</a>
 
 
-extra_css:
-  - stylesheets/extra.css
