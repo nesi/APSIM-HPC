@@ -113,8 +113,18 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
     3. Filenames and directory structure **were/was not** altered. 
 
     
-!!! rocket "Launch it with `source submit.sh`"
+!!! rocket "Launch it with the command `source submit.sh`"
 
     What does it do : 
     
     <center>![image](./images/workflow.png){width="500"}</center>
+
+    ??? clipboard-question "Reason for using `source` and not `bash`"
+
+        - This is do with `cd /working/directory` command within the `submit.sh` script
+
+        - When you run a script using `bash script.sh`, the script is executed in a new subshell. This means:
+            - A new shell process is created to run the script.
+            - Any changes to the working directory (`cd` commands) only affect this subshell.
+            - Once the script finishes, the subshell terminates, and you return to your original shell with its original working directory unchanged.
+            
