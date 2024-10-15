@@ -46,6 +46,10 @@ cp 08-snakemake/Snakefile_2 "$working_dir"
 #Copy the run_snakefile.sh
 cp 08-snakemake/run_snakefile.sh "$working_dir"
 
+#Copy snakemake profile 08-snakemake/profiles to ~/.config/snakemake
+mkdir -p ~/.config/snakemake
+cp -r 08-snakemake/profiles/nesi ~/.config/snakemake/
+
 # Print completion message
 echo -e "\nSwitching to working directory now and running generate_apsim_configs.R to create config files."
 
@@ -85,9 +89,7 @@ elif [[ $(hostname) == *mahuika* ]]; then
 fi
 
 
-#Copy snakemake profile 08-snakemake/profiles to ~/.config/snakemake
-mkdir -p ~/.config/snakemake
-cp -r 08-snakemake/profiles/nesi ~/.config/snakemake/
+
 
 # Ask if the user wants to submit the APSIM-HPC workflow
 echo -n -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no) : ${NC}"
