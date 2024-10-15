@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="images/icon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -97,7 +97,7 @@
 
   
 
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="." title="APSIM-HPC" class="md-header__button md-logo" aria-label="APSIM-HPC" data-md-component="logo">
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              APSIM-HPC
+              Home
             
           </span>
         </div>
@@ -218,13 +218,13 @@
     
   </nav>
   
+    
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
-        
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -279,15 +279,81 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    APSIM-HPC
+    Home
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-apptainer-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Apptainer build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-setup-the-working-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Setup the working directory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-update-workflow-files-with-corresponding-filenames-for-templte-to-create-config-files-soil-library-apsimx-file-namesetc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Update Workflow files with corresponding filenames for templte to create config files, soil library .apsimx file names,etc...
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-submit-the-workflow-to-scheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Submit the workflow to Scheduler
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -313,6 +379,50 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-apptainer-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Apptainer build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-setup-the-working-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Setup the working directory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-update-workflow-files-with-corresponding-filenames-for-templte-to-create-config-files-soil-library-apsimx-file-namesetc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Update Workflow files with corresponding filenames for templte to create config files, soil library .apsimx file names,etc...
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-submit-the-workflow-to-scheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Submit the workflow to Scheduler
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -329,8 +439,115 @@
   
 
 
+<p><center></p>
 <h1 id="apsim-hpc">APSIM-HPC<a class="headerlink" href="#apsim-hpc" title="Permanent link">&para;</a></h1>
+<p></center></p>
 <p>Deploy APSIM (Agricultural Production Systems sIMulator - <a href="https://www.apsim.info/">https://www.apsim.info/</a>) on high performance computing clusters.</p>
+<h2 id="1-apptainer-build">1. Apptainer build<a class="headerlink" href="#1-apptainer-build" title="Permanent link">&para;</a></h2>
+<div class="admonition terminal-2">
+<p class="admonition-title">Building the APSIM container</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/nesi/APSIM-HPC.git
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>APSIM-HPC/01-apptainer-build
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./updateversion-and-build.sh
+</code></pre></div>
+<details class="video">
+<summary><code>./updateversion-and-build.sh</code></summary>
+<p><video width="100%" controls>
+  <source src="https://github.com/user-attachments/assets/a342fcd4-55e9-4615-896b-7eac46368e84" type="video/mp4">
+  Your browser does not support the video tag.
+</video></p>
+</details>
+</div>
+<p><br></p>
+<div class="admonition note"></div>
+<h2 id="2-setup-the-working-directory">2. Setup the working directory<a class="headerlink" href="#2-setup-the-working-directory" title="Permanent link">&para;</a></h2>
+<div class="admonition circle-info">
+<p class="admonition-title">Structure/Content of the working directory</p>
+<p>APSIM requires Weather files ( .met), Template to create the config files, CSV files with soil,file,database names and soil library .apsimx files to be on the same working directory.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>├──<span class="w"> </span><span class="m">1</span>.met
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├──<span class="w"> </span><span class="m">2</span>.met
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├──<span class="w"> </span><span class="m">3</span>.met
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>├──<span class="w"> </span>another_soilapsim_library.apsimx
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>├──<span class="w"> </span>ExampleConfigTemplate.txt
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>├──<span class="w"> </span>fileanddbnames.csv
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>├──<span class="w"> </span>my_master_soilapsim_library.apsimx
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>└──<span class="w"> </span>soilnames.csv
+</code></pre></div>
+</div>
+<p><br></p>
+<div class="admonition note"></div>
+<h2 id="3-update-workflow-files-with-corresponding-filenames-for-templte-to-create-config-files-soil-library-apsimx-file-namesetc">3. Update Workflow files with corresponding filenames for templte to create config files, soil library .apsimx file names,etc...<a class="headerlink" href="#3-update-workflow-files-with-corresponding-filenames-for-templte-to-create-config-files-soil-library-apsimx-file-namesetc" title="Permanent link">&para;</a></h2>
+<div class="admonition quote">
+<p>Please make sure to edit the files within the cloned repository without changing the directory structure or filenames. Final submission script relies on the existing structure and names to populate the working directory with runtime scripts.</p>
+</div>
+<div class="admonition r-project">
+<p class="admonition-title">update <code>03-generate-config-files/generate_apsim_configs.R</code></p>
+<p>First file to be edited is <code>03-generate-config-files/generate_apsim_configs.R</code> which will be used to generate the config.txt files</p>
+<ul>
+<li>Review line number 6, 8 and 11 </li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="m">6</span><span class="w"> </span><span class="n">SoilNames</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="nf">unlist</span><span class="p">(</span><span class="nf">read.csv</span><span class="p">(</span><span class="s">&quot;soilnames.csv&quot;</span><span class="p">)))</span><span class="w"> </span><span class="c1">##List of soil names that must exist in the Soil Library .apsimx file (most likely supplied by experienced APSIM user)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="m">8</span><span class="w"> </span><span class="n">ConfigTemplate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;ExampleConfigTemplate.txt&quot;</span><span class="w"> </span><span class="c1">##Base config file</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="m">11</span><span class="w"> </span><span class="n">SoilLibrary</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;my_master_soilapsim_library.apsimx&quot;</span><span class="w"> </span><span class="c1">###Change name to the soil library you are using</span>
+</code></pre></div>
+</div>
+<div class="admonition snake">
+<p class="admonition-title">update <code>08-snakemake/Snakefile_1</code></p>
+<ul>
+<li>All changes are within the <code>config</code> block<ul>
+<li><code>apptainer_bind</code> - We recommend binding the full filesystem. <ul>
+<li>For <strong>eRI</strong>, It will be <code>"apptainer_bind": "/agr/scratch,/agr/persist"</code></li>
+<li>For <strong>Mahuika</strong>, it's <code>"apptainer_bind": "/nesi/project,/nesi/nobackup,/opt/nesi"</code></li>
+</ul>
+</li>
+<li><code>"excluded_txt_files"</code> is the name of the template config which will excluded during the processing. Otherwise, it will create a .apsimx and a place holder .db file for itself</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w">   </span><span class="m">4</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">   </span><span class="m">5</span><span class="w">     </span><span class="s2">&quot;apptainer_bind&quot;</span>:<span class="w"> </span><span class="s2">&quot;/full/filesystem&quot;</span>,
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">   </span><span class="m">6</span><span class="w">     </span><span class="s2">&quot;apptainer_image&quot;</span>:<span class="w"> </span><span class="s2">&quot;/path/to/container/image/version.aimg&quot;</span>,
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">   </span><span class="m">7</span><span class="w">     </span><span class="s2">&quot;excluded_txt_files&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;ExampleConfigTemplate.txt&quot;</span><span class="o">]</span>,
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">   </span><span class="m">8</span><span class="w">     </span><span class="s2">&quot;max_consecutive_failures&quot;</span>:<span class="w"> </span><span class="m">10</span>,
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">   </span><span class="m">9</span><span class="w">     </span><span class="s2">&quot;slurm_logdir&quot;</span>:<span class="w"> </span><span class="s2">&quot;slurmlogs&quot;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="m">10</span><span class="w"> </span><span class="o">}</span>
+</code></pre></div>
+</div>
+<div class="admonition snake">
+<p class="admonition-title">update <code>08-snakemake/Snakefile_2</code></p>
+<ul>
+<li>Simlar to above, all changes are within the <code>config</code> block<ul>
+<li><code>"excluded_apsimx_files"</code> is/are the name/s of the soil library .apsimx files which will excluded during the processing. Otherwise, it will create a .db file/s for those</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">   </span><span class="m">5</span><span class="w"> </span><span class="nv">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">   </span><span class="m">6</span><span class="w">     </span><span class="s2">&quot;apptainer_bind&quot;</span>:<span class="w"> </span><span class="s2">&quot;/full/filesystem&quot;</span>,
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">   </span><span class="m">7</span><span class="w">     </span><span class="s2">&quot;apptainer_image&quot;</span>:<span class="w"> </span><span class="s2">&quot;/path/to/container/image/version.aimg&quot;</span>,
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">   </span><span class="m">8</span><span class="w">     </span><span class="s2">&quot;excluded_apsimx_files&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;my_master_soilapsim_library.apsimx&quot;</span>,<span class="w"> </span><span class="s2">&quot;another_soilapsim_library.apsimx&quot;</span><span class="o">]</span>,
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">   </span><span class="m">9</span><span class="w">     </span><span class="s2">&quot;slurm_logdir&quot;</span>:<span class="w"> </span><span class="s2">&quot;slurmlogs&quot;</span>,
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="m">10</span><span class="w">     </span><span class="s2">&quot;size_threshold&quot;</span>:<span class="w"> </span><span class="m">1</span><span class="w"> </span>*<span class="w"> </span><span class="m">1024</span><span class="w"> </span>*<span class="w"> </span><span class="m">1024</span><span class="w">  </span><span class="c1"># 1MB in bytes</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="m">11</span><span class="w"> </span><span class="o">}</span>
+</code></pre></div>
+</div>
+<p><br></p>
+<div class="admonition note"></div>
+<h2 id="4-submit-the-workflow-to-scheduler">4. Submit the workflow to Scheduler<a class="headerlink" href="#4-submit-the-workflow-to-scheduler" title="Permanent link">&para;</a></h2>
+<div class="admonition bulb">
+<p class="admonition-title">Assumptions and pre-requisites</p>
+<ol>
+<li>Cloned the latest version of the repo (<a href="https://github.com/nesi/APSIM-HPC.git">https://github.com/nesi/APSIM-HPC.git</a>)</li>
+<li><code>03-generate-config-files/generate_apsim_configs.R</code> , <code>08-snakemake/Snakefile_1</code> and <code>08-snakemake/Snakefile_2</code> were updated with names of the template files,etc. </li>
+<li>Filenames and directory structure <strong>were/was not</strong> altered. </li>
+</ol>
+</div>
+<div class="admonition rocket">
+<p class="admonition-title">Launch it with <code>source submit.sh</code></p>
+<p>What does it do : </p>
+<p><center><a class="glightbox" href="images/workflow.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="image" src="images/workflow.png" width="500" /></a></center></p>
+</div>
 
 
 
@@ -389,7 +606,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="assets/javascripts/bundle.525ec568.min.js"></script>
