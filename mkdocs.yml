@@ -50,6 +50,7 @@ theme:
     - navigation.expand
     - navigation.top
     - navigation.footer
+    - navigation.tabs.sticky
     - content.code.copy
     - content.code.annotate
 
