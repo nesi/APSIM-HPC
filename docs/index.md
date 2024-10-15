@@ -4,6 +4,9 @@
 
 Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info/) on high performance computing clusters.
 
+<center>
+![image](./images/overall.png)
+</center>
 
 ## 1. Apptainer build
 
@@ -46,7 +49,7 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
 <br>
 !!! note ""
 
-## 3. Update Workflow files with corresponding filenames for templte to create config files, soil library .apsimx file names,etc...
+## 3. Update Workflow files for current simulation
 
 !!! quote ""
     Please make sure to edit the files within the cloned repository without changing the directory structure or filenames. Final submission script relies on the existing structure and names to populate the working directory with runtime scripts.
