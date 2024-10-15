@@ -28,6 +28,8 @@ echo ""
 echo -e "${YELLOW}Provide the path to working directory for apsim_simulations:${NC} \c"
 read -r working_dir
 
+echo ""
+
 # Check if the directory exists, if not create it
 if [ ! -d "$working_dir" ]; then
     mkdir -p "$working_dir"
@@ -48,17 +50,26 @@ cp 08-snakemake/run_snakefile.sh "$working_dir"
 
 #Copy snakemake profile 08-snakemake/profiles to ~/.config/snakemake
 mkdir -p ~/.config/snakemake
-cp -r 08-snakemake/profiles/nesi ~/.config/snakemake/
+cp -r 08-snakemake/profiles/slurm ~/.config/snakemake/
 
 # Print completion message
 echo -e "\nSwitching to working directory now and running generate_apsim_configs.R to create config files."
+echo ""
 
 # Change to the working directory
 cd "$working_dir" || exit
 
 # Print current directory to confirm
 echo -e "${GREEN}${BOLD}Current working directory: $(pwd)${NC}"
+echo ""
 
+#Load modules 
+echo -e "${YELLOW}Loading required modules and copying nesi Snakemake profile...${NC}"
+if [[ $(hostname) == *eri* ]]; then
+  module purge && module load snakemake/7.32.3-foss-2023a-Python-3.11.6 R/4.4.1-foss-2023a Graphviz/12.1.2
+elif [[ $(hostname) == *mahuika* ]]; then
+  module purge >/dev/null 2>&1 && module load snakemake/7.32.3-gimkl-2022a-Python-3.11.3 R/4.3.1-gimkl-2022a
+fi
 
 # Execute the R script
 echo -e "${YELLOW}Generating config files and splitting into multiple sets...${NC}"
@@ -80,20 +91,12 @@ echo -e "${GREEN}${BOLD}Config files generation complete.${NC}"
 
 echo ""
 
-#Load modules 
-echo -e "${YELLOW}Loading required modules and copying nesi Snakemake profile...${NC}"
-if [[ $(hostname) == *eri* ]]; then
-  module purge && module load snakemake/7.32.3-foss-2023a-Python-3.11.6 R/4.4.1-foss-2023a Graphviz/12.1.2
-elif [[ $(hostname) == *mahuika* ]]; then
-  module purge >/dev/null 2>&1 && module load snakemake/7.32.3-gimkl-2022a-Python-3.11.3 R/4.3.1-gimkl-2022a
-fi
-
-
-
 
 # Ask if the user wants to submit the APSIM-HPC workflow
 echo -n -e "${YELLOW}Would you like to submit the APSIM-HPC workflow to generate .db files? (yes/no) : ${NC}"
 read -r submit_answer
+
+echo ""
 
 if [ "${submit_answer,,}" = "yes" ]; then
     # Verify the user is in the correct directory
