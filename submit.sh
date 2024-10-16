@@ -50,7 +50,9 @@ cp 08-snakemake/run_snakefile.sh "$working_dir"
 
 #Copy snakemake profile 08-snakemake/profiles to ~/.config/snakemake
 mkdir -p ~/.config/snakemake
-cp -r 08-snakemake/profiles/slurm ~/.config/snakemake/
+if [ ! -d ~/.config/snakemake/slurm ]; then
+    cp -r 08-snakemake/profiles/slurm ~/.config/snakemake/
+fi
 
 # Print completion message
 echo -e "\nSwitching to working directory now and running generate_apsim_configs.R to create config files."
