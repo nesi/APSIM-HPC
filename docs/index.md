@@ -154,6 +154,16 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
     
     <center>![image](./images/workflow.png){width="500"}</center>
 
+    <br>
+    ??? video "`source submit.sh`"
+
+        <video width="100%" controls>
+          <source src="https://github.com/user-attachments/assets/be6820fa-93ff-485e-b786-b826046e8e08" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+
+        
+
     ??? clipboard-question "Reason for using `source` and not `bash`"
 
         - This is do with `cd /working/directory` command within the `submit.sh` script
