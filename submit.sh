@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo ""
-VERSION="1.4.0"  # Replace with your actual version
-UPDATE_TIME="2024-10-15"  # Replace with your actual update time
+VERSION="1.5.0"  # Replace with your actual version
+UPDATE_TIME="2024-10-16"  # Replace with your actual update time
 
 TITLE_DOC=$(cat << EOF          
           \e[44;37m             APSIM-HPC: Agricultural Production Systems               \e[0m
