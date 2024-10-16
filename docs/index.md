@@ -85,11 +85,15 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
     ```r
     87 SplitConfigFilesIntoSets(list.files(pattern = "ConfigFile.txt$"), nSets = 3)
     ```
+### `08-snakemake/Snakefile_1`
 
+* This step is scheduler based. It generates the .apsimx ( and placeholder .db files) from config files
+* This is a serial process  ( as described above) which makes it the longest step in terms of runtime in the workflow ( take ~25 seconds per config file)
+* Default runtime assigned to this step is **16 hours** ( this is sufficient to handle a set of 2300 files)
 
 !!! snake "update `08-snakemake/Snakefile_1`"
 
-    * All changes are within the `config` block
+    * All major changes are within the `config` block
         - `apptainer_bind` - We recommend binding the full filesystem. 
             - For **eRI**, It will be `"apptainer_bind": "/agr/scratch,/agr/persist"`
             - For **Mahuika**, it's `"apptainer_bind": "/nesi/project,/nesi/nobackup,/opt/nesi"`
@@ -104,6 +108,17 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
        9     "slurm_logdir": "slurmlogs"
       10 }
     ```
+
+    * If you would like to increase the runtime, refer to **line 28** 
+
+    ```bash
+      28         time = "16:00:00"
+    ```
+### `08-snakemake/Snakefile_2`
+
+* This step is scheduler based. It generates the .db from .apsimx files
+* Processing will be done in parallel .i.e. Each .apsimx file will have it's own job. Average processing time per file at 12 cpus varies between 50 seconds to 5 minutes. We have set the default to be 10 minutes per file. Similar to above, change the `time = ` varibale as needed.
+
 !!! snake "update `08-snakemake/Snakefile_2`"
 
     * Simlar to above, all changes are within the `config` block
