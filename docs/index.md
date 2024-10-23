@@ -5,7 +5,7 @@
 Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info/) on high performance computing clusters.
 
 <center>
-![image](./images/overall.png)
+![image](./images/2_overall.png)
 </center>
 
 ## 1. Apptainer build
