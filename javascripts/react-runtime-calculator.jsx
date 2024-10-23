@@ -47,7 +47,7 @@ const RuntimeCalculator = () => {
       ),
       totalFiles > 0 && React.createElement('div', { className: 'results' },
         React.createElement('p', null, `Total number of files: ${totalFiles.toLocaleString()}`),
-        React.createElement('p', null, `Processing time per file: ${SECONDS_PER_FILE} seconds`),
+        React.createElement('p', null, `Processing time per file: ~${SECONDS_PER_FILE} seconds`),
         React.createElement('p', null, `Total runtime: ${totalHours} hours`)
       ),
       totalFiles > 0 && React.createElement('div', { 
@@ -57,7 +57,7 @@ const RuntimeCalculator = () => {
         recommendedSets === 1 
           ? React.createElement('p', null, 'All files can be processed in a single set (under 24 hours)')
           : React.createElement('div', null,
-              React.createElement('p', null, `Recommended to split processing into ${recommendedSets} sets:`),
+              React.createElement('p', null, `Recommended to split config.txt files into ${recommendedSets} sets:`),
               React.createElement('ul', null,
                 React.createElement('li', null, `Files per set: ${filesPerSet.toLocaleString()}`),
                 React.createElement('li', null, `Runtime per set: ${hoursPerSet} hours`)
