@@ -10,10 +10,10 @@
         <meta name="author" content="AgResearch & NeSI">
       
       
-        <link rel="canonical" href="https://nesi.github.io/APSIM-HPC/1-troubleshooting/">
+        <link rel="canonical" href="https://nesi.github.io/APSIM-HPC/3-runtime-and-set-calculator/">
       
       
-        <link rel="prev" href="../1-runtime-info/">
+        <link rel="prev" href="../2-troubleshooting/">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>Troubleshooting - APSIM-HPC</title>
+        <title>Runtime Calculator - APSIM-HPC</title>
       
     
     
@@ -49,6 +49,8 @@
     
     
       <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../stylesheets/runtime-calculator.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -85,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#troubleshooting" class="md-skip">
+        <a href="#runtime-calculator" class="md-skip">
           Skip to content
         </a>
       
@@ -120,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Troubleshooting
+              Runtime Calculator
             
           </span>
         </div>
@@ -309,6 +311,26 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../2-troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -321,54 +343,15 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Troubleshooting
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Troubleshooting
+    Runtime Calculator
   </span>
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#creating-a-new-snakemake-profile" class="md-nav__link">
-    <span class="md-ellipsis">
-      Creating a new Snakemake profile
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -394,23 +377,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#creating-a-new-snakemake-profile" class="md-nav__link">
-    <span class="md-ellipsis">
-      Creating a new Snakemake profile
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -427,51 +393,8 @@
   
 
 
-<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
-<h2 id="creating-a-new-snakemake-profile">Creating a new Snakemake profile<a class="headerlink" href="#creating-a-new-snakemake-profile" title="Permanent link">&para;</a></h2>
-<div class="admonition screwdriver-wrench">
-<p class="admonition-title">Create a new Snakemake profile with cookiecutter</p>
-<ul>
-<li>
-<p>Load a <code>snakemake</code> module Or make sure <code>snakemake</code> in <code>$PATH</code></p>
-</li>
-<li>
-<p>If not already, create a configuration directory for Snakemake profiles:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">profile_dir</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.config/snakemake&quot;</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$profile_dir</span><span class="s2">&quot;</span>
-</code></pre></div>
-</li>
-<li>
-<p>Use <code>cookiecutter</code> to create the Slurm profile template:</p>
-<ul>
-<li>If <code>cookiecutter</code> isn't installed, load snakemake module and run <code>pip install --user cookiecutter</code>
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">template</span><span class="o">=</span><span class="s2">&quot;gh:Snakemake-Profiles/slurm&quot;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cookiecutter<span class="w"> </span>--output-dir<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$profile_dir</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$template</span><span class="s2">&quot;</span>
-</code></pre></div></li>
-</ul>
-</li>
-<li>
-<p>During the cookiecutter process, you'll be prompted to set values for your profile. For example:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>profile_name<span class="w"> </span><span class="o">[</span>slurm<span class="o">]</span>:<span class="w"> </span>myprofile
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sbatch_defaults<span class="w"> </span><span class="o">[]</span>:<span class="w"> </span><span class="nv">account</span><span class="o">=</span>my_account<span class="w"> </span>no-requeue<span class="w"> </span>exclusive
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>cluster_sidecar_help:<span class="w"> </span><span class="o">[</span>Use<span class="w"> </span>cluster<span class="w"> </span>sidecar.<span class="w"> </span>NB!<span class="w"> </span>Requires<span class="w"> </span>snakemake<span class="w"> </span>&gt;<span class="o">=</span><span class="w"> </span><span class="m">7</span>.0!<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span><span class="k">continue</span>...<span class="o">]</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Select<span class="w"> </span>cluster_sidecar:
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="m">1</span><span class="w"> </span>-<span class="w"> </span>yes
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="m">2</span><span class="w"> </span>-<span class="w"> </span>no
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Choose<span class="w"> </span>from<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">2</span><span class="w"> </span>:
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>cluster_name<span class="w"> </span><span class="o">[]</span>:
-</code></pre></div></p>
-</li>
-<li>
-<p>After completing the prompts, the profile scripts and configuration file will be installed in the $profile_dir ( <code>~/.config/snakemake</code>).</p>
-</li>
-<li>
-<p>You can then use this profile when running Snakemake by calling it via  <code>--profile</code> flag:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">snakemake</span> <span class="o">--</span><span class="n">profile</span> <span class="n">myprofile</span> <span class="o">...</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
+<h1 id="runtime-calculator">Runtime Calculator<a class="headerlink" href="#runtime-calculator" title="Permanent link">&para;</a></h1>
+<div class="calculator-container"></div>
 
 
 
@@ -507,7 +430,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../1-runtime-info/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Runtime data">
+          <a href="../2-troubleshooting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Troubleshooting">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -517,7 +440,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Runtime data
+                Troubleshooting
               </div>
             </div>
           </a>
@@ -562,6 +485,12 @@
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+      
+        <script src="../javascripts/runtime-calculator.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
