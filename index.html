@@ -620,7 +620,7 @@
 <li>Last step of this script is to "split" those config files to multiple <strong>Sets</strong> (Default is 3 <strong>Sets</strong>)<ul>
 <li>What is the purpose of this <strong>split</strong> ?<ul>
 <li>This a pre-configuration for <code>08-snakemake/Snakefile_1</code> step. Latter process the config files and create the corresponding .apsimx files ( plus the .db placeholder files). It can not be done in parallel due to <a href="https://github.com/nesi/APSIM-HPC/issues/31">https://github.com/nesi/APSIM-HPC/issues/31</a>. </li>
-<li>Since the processing time per file is ~25 seconds, having all of the configfiles ( assuming there are thousands to process) in one single directory will add unreasonable runtimes. Safest ( and the easiest) soution is to split those files to multiple <strong>Sets</strong> ( processing within a set is still serial but it will be quicker as it will be a fraction of the total samples)</li>
+<li>Since the processing time per file is ~25 seconds, having all of the configfiles ( assuming there are thousands to process) in one single directory will add unreasonable runtimes. Safest ( and the easiest) solution is to split those files to multiple <strong>Sets</strong> ( processing within a set is still serial but it will be quicker as it will be a fraction of the total samples). <a href="https://nesi.github.io/APSIM-HPC/3-runtime-and-set-calculator/">We have prepared a calculator</a> which will provide you an estimate on how many <strong>Sets</strong> each experiment will need to keep the processing  of Configfiles under 24hours <strong>per Set</strong></li>
 </ul>
 </li>
 </ul>
