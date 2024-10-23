@@ -62,7 +62,7 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
 * Last step of this script is to "split" those config files to multiple **Sets** (Default is 3 **Sets**)
     - What is the purpose of this **split** ?
         - This a pre-configuration for `08-snakemake/Snakefile_1` step. Latter process the config files and create the corresponding .apsimx files ( plus the .db placeholder files). It can not be done in parallel due to https://github.com/nesi/APSIM-HPC/issues/31. 
-        - Since the processing time per file is ~25 seconds, having all of the configfiles ( assuming there are thousands to process) in one single directory will add unreasonable runtimes. Safest ( and the easiest) soution is to split those files to multiple **Sets** ( processing within a set is still serial but it will be quicker as it will be a fraction of the total samples)
+        - Since the processing time per file is ~25 seconds, having all of the configfiles ( assuming there are thousands to process) in one single directory will add unreasonable runtimes. Safest ( and the easiest) solution is to split those files to multiple **Sets** ( processing within a set is still serial but it will be quicker as it will be a fraction of the total samples). [We have prepared a calculator](https://nesi.github.io/APSIM-HPC/3-runtime-and-set-calculator/) which will provide you an estimate on how many **Sets** each experiment will need to keep the processing  of Configfiles under 24hours **per Set**
 
 
 
