@@ -24,10 +24,8 @@ BOLD='\033[1m'
 
 echo ""
 echo ""
-# Ask for the working directory
-echo -e "${YELLOW}Provide the path to working directory for apsim_simulations:${NC} \c"
-read -r working_dir
-
+# assign the workng directory
+export working_dir=""
 echo ""
 
 # Check if the directory exists, if not create it
