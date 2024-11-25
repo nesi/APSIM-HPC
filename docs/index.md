@@ -134,6 +134,16 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
       10     "size_threshold": 1 * 1024 * 1024  # 1MB in bytes
       11 }
     ```
+
+### `submit.sh` on the parent directory
+
+Update line 28 on `submit.sh` file with the path to above working directory with .met, .apsimx,etc 
+
+```bash
+# assign the workng directory
+export working_dir="/path/to/working/directory"
+```
+
 <br>
 !!! note ""
 
