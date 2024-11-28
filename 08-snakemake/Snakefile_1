@@ -5,7 +5,7 @@ config = {
     "apptainer_bind": "/agr/scratch,/agr/persist",
     "apptainer_image": "/agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.09.7579.0.aimg",
     "excluded_txt_files": ["ExampleConfig.txt"],
-    "max_consecutive_failures": 10,
+    "max_consecutive_failures": 3,
     "slurm_logdir": "slurmlogs"
 }
 
@@ -22,7 +22,9 @@ rule process_txt_files:
     output:
         "txt_files_processed"
     params:
-        logfile = lambda wildcards, output: f"{config['slurm_logdir']}/txt_files_%j.out"
+        logfile = lambda wildcards, output: f"{config['slurm_logdir']}/txt_files_%j.out",
+        processed_files_log = "processed_txt_files.log",
+        failed_files_log = "failed_txt_files.log"
     resources:
         mem_mb = 8000,
         time = "16:00:00"
@@ -35,27 +37,46 @@ rule process_txt_files:
         export APPTAINER_BIND="{config[apptainer_bind]}"
         export APPTAINER_CMD="apptainer exec {config[apptainer_image]}"
         
-        mkdir -p FAILED
-        consecutive_failures=0
+        mkdir -p FAILED_CONFIG
+        rm -f {params.processed_files_log} {params.failed_files_log}
+        touch {params.processed_files_log} {params.failed_files_log}
+        
+        total_files=$(echo "{input.txt_files}" | wc -w)
+        processed_files=0
+        failed_files=0
         max_consecutive_failures={config[max_consecutive_failures]}
+        consecutive_failures=0
         
         for file in {input.txt_files}; do
+            echo "Processing $file"
+            
             if $APPTAINER_CMD Models --cpu-count {threads} --apply "$file"; then
-                echo "Successfully processed $file"
+                echo "$file" >> {params.processed_files_log}
+                processed_files=$((processed_files + 1))
                 consecutive_failures=0
             else
                 echo "Failed to process $file"
-                mv "$file" FAILED/
-                ((consecutive_failures++))
+                echo "$file" >> {params.failed_files_log}
+                mv "$file" FAILED_CONFIG/
+                failed_files=$((failed_files + 1))
+                consecutive_failures=$((consecutive_failures + 1))
                 
                 if [ $consecutive_failures -ge $max_consecutive_failures ]; then
-                    echo "Error: $max_consecutive_failures consecutive failures reached. Terminating job." >&2
+                    echo "Error: $max_consecutive_failures consecutive failures reached." >&2
                     exit 1
                 fi
             fi
         done
         
-        touch {output}
+        echo "Total files: $total_files"
+        echo "Processed files: $processed_files"
+        echo "Failed files: $failed_files"
+        
+        if [ $failed_files -eq 0 ]; then
+            touch {output}
+        else
+            exit 1
+        fi
         """
 
 rule create_logdir:
