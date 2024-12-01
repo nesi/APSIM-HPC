@@ -71,6 +71,7 @@ SplitConfigFilesIntoSets <- function(ConfigFiles, nSets = 1){
     file.copy(apsimxFiles, paste0(Sets[i], "/", apsimxFiles))
     SmakeFiles <- list.files(pattern = 'Snakefile')
     file.copy(SmakeFiles, paste0(Sets[i], "/", SmakeFiles))
+    file.copy("./MergeAllTables.py", paste0(Sets[i], "/MergeAllTables.py"))
 
   }
   cat("\nCopying complete")

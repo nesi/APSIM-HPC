@@ -4,7 +4,7 @@ echo ""
 VERSION="1.5.0"  # Replace with your actual version
 UPDATE_TIME="2024-10-16"  # Replace with your actual update time
 
-TITLE_DOC=$(cat << EOF          
+TITLE_DOC=$(cat << EOF
           \e[44;37m             APSIM-HPC: Agricultural Production Systems               \e[0m
           \e[44;37m              Simulator - High Performance Computing                  \e[0m
           \e[47;32m               Author  :  AgR-NeSI                                    \e[0m
@@ -46,6 +46,13 @@ cp 08-snakemake/Snakefile_2 "$working_dir"
 #Copy the run_snakefile.sh
 cp 08-snakemake/run_snakefile.sh "$working_dir"
 
+#Copy files for DB merging
+cp 09-misc-scripts/MergeAllDBFiles.py "$working_dir"
+cp 09-misc-scripts/MergeMasterDBFiles.py "$working_dir"
+cp 09-misc-scripts/submitMergeTables.sh "$working_dir"
+cp 09-misc-scripts/submitMergeMasterDB.sh "$working_dir"
+
+
 #Copy snakemake profile 08-snakemake/profiles to ~/.config/snakemake
 mkdir -p ~/.config/snakemake
 if [ ! -d ~/.config/snakemake/slurm ]; then
@@ -63,7 +70,7 @@ cd "$working_dir" || exit
 echo -e "${GREEN}${BOLD}Current working directory: $(pwd)${NC}"
 echo ""
 
-#Load modules 
+#Load modules
 echo -e "${YELLOW}Loading required modules and copying nesi Snakemake profile...${NC}"
 if [[ $(hostname) == *eri* ]]; then
   module purge && module load snakemake/7.32.3-foss-2023a-Python-3.11.6 R/4.4.1-foss-2023a Graphviz/12.1.2
@@ -98,7 +105,7 @@ read -r submit_answer
 
 echo ""
 
-if [ "${submit_answer,,}" = "yes" ]; then
+if [[ "${submit_answer,,}" =~ ^(y|yes)$ ]]; then
     # Verify the user is in the correct directory
     if [ "$(pwd)" != "$working_dir" ]; then
         echo -e "${RED}Error: Not in the correct working directory. Please run the script again.${NC}"

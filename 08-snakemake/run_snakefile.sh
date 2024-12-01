@@ -34,7 +34,7 @@ run_snakefile() {
             if [ -f failed_txt_files.log ]; then
                 failed_count=$(wc -l < failed_txt_files.log)
                 log_message "Number of failed files: $failed_count"
-                
+
                 # Optional: Add logic to handle specific failure scenarios
                 if [ "$failed_count" -gt 0 ]; then
                     log_message "Examining failed files in FAILED_CONFIG"
@@ -68,6 +68,10 @@ main() {
         log_message "Error: APSIM file processing failed"
         exit 1
     fi
+
+    # Merge DB files within sets
+    log_message "Merging DB files"
+    sbatch submitMergeTables.sh
 
     log_message "Workflow completed successfully"
 }

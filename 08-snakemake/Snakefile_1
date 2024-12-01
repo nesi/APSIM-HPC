@@ -27,7 +27,7 @@ rule process_txt_files:
         failed_files_log = "failed_txt_files.log"
     resources:
         mem_mb = 8000,
-        time = "16:00:00"
+        time = "24:00:00"
     threads: 4
     shell:
         """
@@ -36,20 +36,20 @@ rule process_txt_files:
         module load Apptainer
         export APPTAINER_BIND="{config[apptainer_bind]}"
         export APPTAINER_CMD="apptainer exec {config[apptainer_image]}"
-        
+
         mkdir -p FAILED_CONFIG
         rm -f {params.processed_files_log} {params.failed_files_log}
         touch {params.processed_files_log} {params.failed_files_log}
-        
+
         total_files=$(echo "{input.txt_files}" | wc -w)
         processed_files=0
         failed_files=0
         max_consecutive_failures={config[max_consecutive_failures]}
         consecutive_failures=0
-        
+
         for file in {input.txt_files}; do
             echo "Processing $file"
-            
+
             if $APPTAINER_CMD Models --cpu-count {threads} --apply "$file"; then
                 echo "$file" >> {params.processed_files_log}
                 processed_files=$((processed_files + 1))
@@ -60,18 +60,18 @@ rule process_txt_files:
                 mv "$file" FAILED_CONFIG/
                 failed_files=$((failed_files + 1))
                 consecutive_failures=$((consecutive_failures + 1))
-                
+
                 if [ $consecutive_failures -ge $max_consecutive_failures ]; then
                     echo "Error: $max_consecutive_failures consecutive failures reached." >&2
                     exit 1
                 fi
             fi
         done
-        
+
         echo "Total files: $total_files"
         echo "Processed files: $processed_files"
         echo "Failed files: $failed_files"
-        
+
         if [ $failed_files -eq 0 ]; then
             touch {output}
         else
