@@ -42,7 +42,6 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
     ├── 3.met
     ├── another_soilapsim_library.apsimx
     ├── ExampleConfigTemplate.txt
-    ├── fileanddbnames.csv
     ├── my_master_soilapsim_library.apsimx
     └── soilnames.csv
     ```
