@@ -13,6 +13,28 @@ log_message() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
 }
 
+# Function to perform cleanup after successful run
+cleanup_files() {
+    log_message "Checking conditions for cleanup..."
+    
+    if [ -z "$(ls -A FAILED_CONFIG 2>/dev/null)" ] && [ $(ls -1 FAILED_DB 2>/dev/null | wc -l) -le 1 ]; then
+        log_message "FAILED_CONFIG is empty and FAILED_DB has at most one file. Starting cleanup..."
+        
+        # Delete files with specified extensions
+        find . -maxdepth 1 -type f \( -name "*.processed" -o -name "*.apsimx" -o -name "*.txt" -o -name "*.met" \) -delete
+        
+        # Delete processing status files
+        rm -f txt_files_processed db_files_sorted
+        
+        log_message "Cleanup completed successfully"
+        return 0
+    else
+        log_message "FAILED_CONFIG is not empty or FAILED_DB has more than one file. Skipping cleanup."
+        return 1
+    fi
+}
+
+
 # Function to run a Snakefile with comprehensive retry and recovery logic
 run_snakefile() {
     local snakefile=$1
@@ -57,20 +79,34 @@ run_snakefile() {
 
 # Main workflow execution
 main() {
+    local workflow_success=true
+
     # Process Snakefile_1
     if ! run_snakefile "Snakefile_1" 1; then
         log_message "Error: Text file processing failed"
+        workflow_success=false
         exit 1
     fi
 
     # Process Snakefile_2
     if ! run_snakefile "Snakefile_2" "$APSIM_JOBS"; then
         log_message "Error: APSIM file processing failed"
+        workflow_success=false
         exit 1
     fi
 
-    log_message "Workflow completed successfully"
+    if [ "$workflow_success" = true ]; then
+        log_message "Workflow completed successfully"
+        
+        # Attempt cleanup
+        if cleanup_files; then
+            log_message "Post-processing cleanup completed successfully"
+        else
+            log_message "Warning: Cleanup skipped due to failed conditions"
+        fi
+    fi
 }
+
 
 # Trap for handling interrupts
 trap 'log_message "Workflow interrupted"' INT TERM
