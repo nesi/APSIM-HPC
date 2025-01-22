@@ -57,6 +57,7 @@ Deploy APSIM (Agricultural Production Systems sIMulator - https://www.apsim.info
 ### `03-generate-config-files/generate_apsim_configs.R` 
 
 * This script generates the config.txt files ( one file per soil sample per weather file)
+* For details on configuring the R script to your needs, see Editing-Rscript-and-Config
 * It will be executed interactively than submitting as a job to scheduler ( relatively quick -  generating 10,000 files will be done within 75 seconds or so)
 * Last step of this script is to "split" those config files to multiple **Sets** (Default is 3 **Sets**)
     - What is the purpose of this **split** ?

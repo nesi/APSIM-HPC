@@ -1,6 +1,6 @@
 #Editing R script and config file
 
-In the current setup, the R script will generate config files for all possible soil and weather file combinations. More commonly, one would have a specific experimental design in mind. To avoid running a number of models that are not wanted, instead of using all possible ocmbinations, the experimental design can be loaded from a csv file. This csv file also needs to be saved in the working directory together with the config file template. 
+In the current setup, the R script will generate config files for all possible soil and weather file combinations. More commonly, one would have a specific experimental design in mind. To avoid running a number of models that are not wanted, instead of using all possible combinations, the experimental design can be loaded from a csv file. This csv file also needs to be saved in the working directory together with the config file template. 
 
 The csv file needs two columns, with Soil names in one column and weather files in another column. The easiest way to alter the R script is to remove the lines loading soil names and weather files (lines 6 and 7) as well as the lines that creates the experimental design (line 25) and loading the csv file with the experimental design by adding the following lines
 
