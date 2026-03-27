@@ -1,0 +1,49 @@
+# ============================================================
+# APSIM-HPC Batch Workflow Configuration
+# ============================================================
+# Edit this file to match your project setup before running
+# generate_batches.py or the Snakemake workflow.
+# ============================================================
+
+# --- Paths ---
+# Base APSIM model file (relative to working directory)
+apsimx_template: "rXXXX_Template.apsimx"
+
+# Soil library file
+soil_library: "YYYY-MM-DD_SoilLibrary_rXXXX.apsimx"
+
+# CSV file with soil/weather combinations.
+# Column 1: weather file name (without .met extension)
+# Column 2: soil name
+combinations_csv: "AgentInfo.csv"
+
+# Output directory for generated batch CSVs and results
+output_dir: "batches"
+
+# Directory for final .db output files
+db_output_dir: "OutputDatabases"
+
+# --- Batch Settings ---
+# Number of rows (soil×weather combinations) per batch CSV file.
+# Larger = fewer SLURM jobs but longer per-job runtime.
+# Smaller = more parallelism but more SLURM overhead.
+rows_per_batch: 1000
+
+# --- APSIM Container ---
+# Absolute path to the Apptainer/Singularity container image
+container_image: "/agr/persist/projects/2024_apsim_improvements/ProductionVersion/apsim-simulations-20240918s/container/apsim-YYYY.MM.XXXX.0.aimg"
+
+# Bind mounts for Apptainer (comma-separated)
+# These paths are made available inside the container.
+# At minimum, include the scratch directory where simulations run
+# and the persist directory where the container/data live.
+apptainer_bind: "/agr/scratch,/agr/persist"
+
+# --- SLURM Settings (used by Snakemake profile) ---
+slurm:
+  partition: ""
+  time: "2-00:00:00"
+  cpus_per_task: 16
+  mem: "32G"
+  account: "2024_apsim_improvements"  # Set your HPC account/project code
+  log_dir: "slurmlogs"

@@ -2,7 +2,7 @@
 
 echo ""
 VERSION="1.5.0"  # Replace with your actual version
-UPDATE_TIME="2024-10-16"  # Replace with your actual update time
+UPDATE_TIME="2026-03-24"  # Replace with your actual update time
 
 TITLE_DOC=$(cat << EOF
           \e[44;37m             APSIM-HPC: Agricultural Production Systems               \e[0m
@@ -25,7 +25,7 @@ BOLD='\033[1m'
 echo ""
 echo ""
 # assign the workng directory
-export working_dir=""
+export working_dir="/mnt/gpfs/scratch/projects/2024_apsim_improvements/runFolders/r8012_20260320_NitrateIndicator/batch_failed"
 echo ""
 
 # Check if the directory exists, if not create it
@@ -47,7 +47,7 @@ cp 08-snakemake/Snakefile_2 "$working_dir"
 cp 08-snakemake/run_snakefile.sh "$working_dir"
 
 #Copy files for DB merging
-cp 09-misc-scripts/MergeAllDBFiles.py "$working_dir"
+cp 09-misc-scripts/MergeAllTables.py "$working_dir"
 cp 09-misc-scripts/MergeMasterDBFiles.py "$working_dir"
 cp 09-misc-scripts/submitMergeTables.sh "$working_dir"
 cp 09-misc-scripts/submitMergeMasterDB.sh "$working_dir"
@@ -107,6 +107,7 @@ echo ""
 
 if [[ "${submit_answer,,}" =~ ^(y|yes)$ ]]; then
     # Verify the user is in the correct directory
+    echo -e "${YELLOW}Current wd $(pwd) reported wd $working_dir. ${NC}"
     if [ "$(pwd)" != "$working_dir" ]; then
         echo -e "${RED}Error: Not in the correct working directory. Please run the script again.${NC}"
         exit 1

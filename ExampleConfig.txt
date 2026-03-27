@@ -1,9 +1,4 @@
-load Example2Tables.apsimx
-
-[Weather].FileName = WeatherFileName.met
-add [Block] ExampleSoilLibrary.apsimx;[SoilName]
-delete [Block].Soil
-
+load TemplateXXXX_YYYY-MM-DD_ProjectIdentifier.apsimx
+[Weather].FileName=WeatherFileName.met
+replace [Soil] with SoilName from YYYY-MM-DD_SoilLibrary_rXXXX.apsimx
 save WeatherFileName_SoilName.apsimx
-
-run

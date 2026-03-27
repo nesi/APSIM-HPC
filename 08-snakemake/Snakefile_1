@@ -3,9 +3,9 @@ from glob import glob
 
 config = {
     "apptainer_bind": "/agr/scratch,/agr/persist",
-    "apptainer_image": "/agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.09.7579.0.aimg",
-    "excluded_txt_files": ["ExampleConfig.txt"],
-    "max_consecutive_failures": 3,
+    "apptainer_image": "/mnt/gpfs/persist/projects/2024_apsim_improvements/ProductionVersion/apsim-simulations-20240918s/container/apsim-YYYY.MM.XXXX.0.aimg",
+    "excluded_txt_files": ["ExampleConfig_WeatherAndSoil.txt"],
+    "max_consecutive_failures": 8,
     "slurm_logdir": "slurmlogs"
 }
 
@@ -13,12 +13,12 @@ txt_files = [f for f in glob("*.txt") if f not in config["excluded_txt_files"]]
 
 rule all:
     input:
-        config["slurm_logdir"],
         "txt_files_processed"
 
 rule process_txt_files:
     input:
-        txt_files = txt_files
+        txt_files = txt_files,
+        logdir = config["slurm_logdir"]
     output:
         "txt_files_processed"
     params:
@@ -27,7 +27,7 @@ rule process_txt_files:
         failed_files_log = "failed_txt_files.log"
     resources:
         mem_mb = 8000,
-        time = "24:00:00"
+        time = "20:00:00"
     threads: 4
     shell:
         """
@@ -57,7 +57,7 @@ rule process_txt_files:
             else
                 echo "Failed to process $file"
                 echo "$file" >> {params.failed_files_log}
-                mv "$file" FAILED_CONFIG/
+                cp "$file" FAILED_CONFIG/
                 failed_files=$((failed_files + 1))
                 consecutive_failures=$((consecutive_failures + 1))
 
@@ -82,5 +82,8 @@ rule process_txt_files:
 rule create_logdir:
     output:
         directory(config["slurm_logdir"])
+    resources:
+        mem_mb = 1000,
+        time = "00:01:00"
     shell:
         "mkdir -p {output}"

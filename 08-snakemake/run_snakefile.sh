@@ -4,7 +4,7 @@
 set -e
 
 # Configuration
-APSIM_JOBS=100
+APSIM_JOBS=20 #100
 MAX_WORKFLOW_RETRIES=3
 RETRY_DELAY=60  # seconds
 

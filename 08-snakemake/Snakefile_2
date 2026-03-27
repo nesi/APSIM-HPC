@@ -4,10 +4,10 @@ from glob import glob
 
 config = {
     "apptainer_bind": "/agr/scratch,/agr/persist",
-    "apptainer_image": "/agr/persist/projects/2024_apsim_improvements/apsim-simulations/container/apsim-2024.09.7579.0.aimg",
-    "excluded_apsimx_files": ["2023-10-09_MasterSoilApsimLibrary.apsimx", "LargerExample.apsimx"],
+    "apptainer_image": "/mnt/gpfs/persist/projects/2024_apsim_improvements/ProductionVersion/apsim-simulations-20240918s/container/apsim-YYYY.MM.XXXX.0.aimg",
+    "excluded_apsimx_files": ["YYYY-MM-DD_SoilLibrary_rXXXX.apsimx", "rXXXX_Template.apsimx"],
     "slurm_logdir": "slurmlogs",
-    "size_threshold": 1 * 1024 * 1024  # 1MB in bytes
+    "size_threshold": 1 * 1024 * 1024    # 5 KB in bytes, should be changed to 1 MB for larger runs
 }
 
 apsimx_files = [f for f in glob("*.apsimx") if f not in config["excluded_apsimx_files"]]
@@ -21,15 +21,15 @@ rule all:
 rule process_apsimx:
     input:
         apsimx = "{file}.apsimx",
-        db = "{file}.db"
+#        db = "{file}.db"   #Commented out due to updated APSIM behaviour
     output:
         "{file}.processed"
     params:
         logfile = lambda wildcards, output: f"{config['slurm_logdir']}/{wildcards.file}_%j.out"
     resources:
         mem_mb = 8000,
-        time = "00:10:00"
-    threads: 12
+        time = "00:30:00"
+    threads: 16
     shell:
         """
         #SBATCH --output={params.logfile}
@@ -43,6 +43,9 @@ rule process_apsimx:
 rule create_logdir:
     output:
         directory(config["slurm_logdir"])
+    resources:
+        mem_mb = 1000,
+        time = "00:10:00"
     shell:
 	    """
         mkdir -p {output}
@@ -55,6 +58,9 @@ rule sort_db_files:
         expand("{file}.processed", file=[os.path.splitext(f)[0] for f in apsimx_files])
     output:
         "db_files_sorted"
+    resources:
+        mem_mb = 8000,
+        time = "01:00:00"
     run:
         passed_dir = "PASSED_DB"
         failed_dir = "FAILED_DB"

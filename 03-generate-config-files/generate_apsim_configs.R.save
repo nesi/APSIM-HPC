@@ -5,10 +5,10 @@
 library(tidyr)
 #SoilNames <- as.vector(unlist(read.csv("AvailableSoilsInLibrary.csv"))) ##List of soil names that must exist in the Soil Library .apsimx file (most likely supplied by experienced APSIM user)
 
-ConfigTemplate <- "ExampleConfig_WeatherAndSoil.txt" ##Base config file
-ExperimentFileName <- "rXXXX_Template.apsimx"
+ConfigTemplate <- "ExampleConfig.txt" ##Base config file
+ExperimentFileName <- "RITTemplate7740_2025-04-16_TestSoil.apsimx"
 #Create a vector of all soil names available in the soil library
-SoilLibrary <- "YYYY-MM-DD_SoilLibrary_rXXXX.apsimx" ###Change name to the soil library you are using
+SoilLibrary <- "SoilLibraryFailedSoilNoFolder_20250423.apsimx" ###Change name to the soil library you are using
 AvailableSoilNames <- readLines(SoilLibrary)
 AvailableSoilNames <- AvailableSoilNames[grep('LocalName', AvailableSoilNames)]
 AvailableSoilNames <- gsub("\"", "", AvailableSoilNames)
@@ -19,7 +19,7 @@ AvailableSoilNames <- gsub(",", "", AvailableSoilNames)
 
 #Temporary Subset of soilNames
 #SoilNames <- AvailableSoilNames
-#WeatherFiles <- list.files('./', pattern = "\\.met$") %>% gsub('.met', '', .)
+WeatherFiles <- list.files('./', pattern = "\\.met$") %>% gsub('.met', '', .)
 ###Make a check for Verbosity, and change verbosity to 0 if set to anything else
 ExperimentFile <- readLines(ExperimentFileName)
 whVerbosity <- grep("Verbosity", ExperimentFile)
@@ -28,15 +28,9 @@ if(ExperimentFile[whVerbosity]!="              \"Verbosity\": 0,"){
   write(ExperimentFile, file = ExperimentFileName)
 }
 
-#AvailableSoilNames <- "Abbott_1a1" #MOnly used for Weather testing
-WeatherFiles <- "7354" #Only used for Soil testing
-#WeatherFiles <- list.files(path = "./", pattern = ".met$", full.names = F) #only used for weather testing
-#WeatherFiles <- gsub('.met', "", WeatherFiles) #only used for weather testing
-# ##TEMPORARY LINE 
-# AvailableSoilNames <- AvailableSoilNames[883:(883+882)]
-# Des <- expand.grid(WeatherFiles, AvailableSoilNames) #make factorial design from factors given #Only used for testing
-Des <- read.csv('AgentInfo.csv') #Used for production runs
-colnames(Des) <- c('Var2', 'Var1')
+Des <- expand.grid(AvailableSoilNames, WeatherFiles) #make factorial design from factors given
+#Des <- read.csv('AgentInto.csv')
+#colnames(Des) <- c('Var2', 'Var1')
 DBNames <- vector() ##Object initiation
 apsimxNames <- vector()
 CreateConfigFiles <- function(ConfigTemplate, Des){
@@ -77,11 +71,8 @@ SplitConfigFilesIntoSets <- function(ConfigFiles, nSets = 1){
     file.rename(FilesRemaining[1:FilesPerSet[i]], paste0(Sets[i], "/", FilesRemaining[1:FilesPerSet[i]]))
     cat(paste0("\nFiles in ", Sets[i], " ", length(list.files(Sets[i], pattern = 'ConfigFile.txt$'))))
 
-    CFGFiles <- list.files(Sets[i], pattern = "ConfigFile.txt$")
-    #metFiles <- unique(paste0(gsub("ConfigFile.txt", "", sapply(strsplit(CFGFiles, split = "_"), "[[", 3)), ".met"))
-    metFiles <- list.files("./", pattern = ".met$")
+    metFiles <- list.files(pattern = '.met$')
     file.copy(metFiles, paste0(Sets[i], "/", metFiles))
-    cat(paste0("\n.met files copied to Set ", i, ":", length(metFiles))) 
     apsimxFiles <- list.files(pattern = '.apsimx$')
     file.copy(apsimxFiles, paste0(Sets[i], "/", apsimxFiles))
     SmakeFiles <- list.files(pattern = 'Snakefile')
@@ -91,7 +82,7 @@ SplitConfigFilesIntoSets <- function(ConfigFiles, nSets = 1){
 
   }
   cat("\nCopying complete")
-  #cat(paste0("\n.met files copied to each set: ", length(list.files(pattern = ".met$"))))
+  cat(paste0("\n.met files copied to each set: ", length(list.files(pattern = ".met$"))))
   cat(paste0("\n.apsimx files copied to each set: ", length(list.files(pattern = ".apsimx$"))))
   cat(paste0("\n.Snakemake files copied to each set: ", length(list.files(pattern = "Snakefile"))))
 

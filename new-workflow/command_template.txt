@@ -1,0 +1,18 @@
+# APSIM Command Template for Batch Mode (Option B: one .db per batch)
+# Placeholders ($variable) are substituted per row from the batch CSV.
+#
+# CSV columns required: batch-name, soil-name, weather-file, sim-name
+#
+# Usage: Models --apply command_template.txt --batch batch_0001.csv
+#
+# How it works:
+#   - The Snakefile copies the template .apsimx → batch_XXXX.apsimx before running.
+#   - Every CSV row loads the batch-named file, modifies soil/weather/sim-name.
+#   - Each row runs in memory — all results accumulate in ONE .db per batch.
+#   - No individual .apsimx files are created per combination.
+
+load $batch-name.apsimx
+[Weather].FileName = $weather-file.met
+replace [Soil] with $soil-name from 2026-03-10_SoilLibrary_r8012.apsimx
+[Experiment].Name = $sim-name
+run

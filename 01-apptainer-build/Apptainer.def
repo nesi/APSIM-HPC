@@ -11,6 +11,7 @@ From: ubuntu:focal
 Maintainer Nesi-AgR
 
 %setup
+#    curl --silent -o ${APPTAINER_ROOTFS}/ApsimSetup.deb https://builds.apsim.info/api/nextgen/download/8012/Linux
   curl --silent -o ${APPTAINER_ROOTFS}/packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 
 %post

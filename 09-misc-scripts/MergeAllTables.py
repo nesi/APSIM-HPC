@@ -9,7 +9,7 @@ DBfiles = glob.glob('./PASSED_DB/*.db')
 #Path and Name of new DB to be created. 
 MasterDB = './MasterDB.db'
 
-TableNames = 'SummReport'#, 'OtherTableName
+TableNames = 'Report'#, 'OtherTableName
 
 #Create Master DB by copying the first DB file and renaming it to desired name and place 
 shutil.copyfile(DBfiles[0], MasterDB)

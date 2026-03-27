@@ -7,7 +7,7 @@ whatis("Description: The Leading Software Framework for Agricultural Systems Mod
 whatis("URL: https://www.apsim.info/")
 
 -- Define the Apptainer image path
-local image = "/mnt/gpfs/persist/projects/2024_apsim_improvements/APSIM-eri-mahuika/apsim-simulations/container/apsim-2024.08.7572.0.aimg"
+local image = "/mnt/gpfs/persist/projects/2024_apsim_improvements/APSIM-eri-mahuika/apsim-simulations/container/apsim-2024.12.7637.0.aimg"
 
 -- Function to prepend a path to an environment variable
 local function prependPath(envVar, path)
