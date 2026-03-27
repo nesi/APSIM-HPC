@@ -2,8 +2,7 @@
 
 ## Overview
 
-This workflow uses APSIM's `--apply` and `--batch` CLI flags (introduced in APSIM Next Gen)
-to replace the old multi-step per-file approach. Instead of generating one `.apsimx` file
+This workflow uses APSIM's `--batch` CLI flag to replace the old multi-step per-file approach. Instead of generating one `.apsimx` file
 per soil×weather combination, we use:
 
 1. **One command template** (`command_template.txt`) with `$placeholder` variables
@@ -48,11 +47,11 @@ new-workflow/
 Set paths to your `.apsimx` template, soil library, container image, and SLURM resources:
 
 ```yaml
-apsimx_template: "r8012_SoETemplate.apsimx"
-soil_library: "2026-03-10_SoilLibrary_r8012.apsimx"
+apsimx_template: "rXXXX_Template.apsimx"
+soil_library: "YYYY-MM-DD_SoilLibrary_rXXXX.apsimx"
 combinations_csv: "AgentInfo.csv"
 rows_per_batch: 1000
-container_image: "/path/to/apsim-2026.03.8012.0.aimg"
+container_image: "/path/to/apsim-YYYY.MM.XXXX.0.aimg"
 apptainer_bind: "/agr/scratch,/agr/persist"
 
 slurm:
@@ -69,7 +68,7 @@ python generate_batches.py --config config.yaml
 ```
 
 Reads the combinations CSV, validates that all soil names exist in the soil library,
-then splits the factorial design into batch CSV files (default: 5000 rows each) under `batches/`.
+then splits the factorial design into batch CSV files (default: 1000 rows each) under `batches/`.
 
 Each batch CSV has columns: `batch-name`, `soil-name`, `weather-file`, `sim-name`.
 
@@ -80,7 +79,7 @@ The template uses `$placeholder` variables that APSIM substitutes per CSV row:
 ```
 load $batch-name.apsimx
 [Weather].FileName = $weather-file.met
-replace [Soil] with $soil-name from 2026-03-10_SoilLibrary_r8012.apsimx
+replace [Soil] with $soil-name from 2026-03-10_SoilLibrary_rXXXX.apsimx
 [Experiment].Name = $sim-name
 run
 ```
@@ -141,7 +140,7 @@ snakemake merge_databases --cores 1
 ## Resource Allocation Guide
 
 There are **three layers** of SLURM jobs in this workflow, each with separate resource
-allocations. Understanding which settings control which process is critical for tuning.
+allocations. 
 
 ### Layer 1: Controller Job (`submit_workflow.slurm`)
 
@@ -154,7 +153,7 @@ APSIM — it only submits and monitors child jobs.
 #SBATCH --time=3-00:00:00      # Wall time for the entire workflow (3 days)
 #SBATCH --cpus-per-task=2      # Snakemake + Python overhead only
 #SBATCH --mem=4G               # Snakemake + Python overhead only
-#SBATCH --account=2024_apsim_improvements
+#SBATCH --account=2024_apsim_improvements #Change to desired account
 ```
 
 **Tuning notes:**
@@ -201,7 +200,7 @@ slurm:
 
 ### Layer 3: Lightweight Jobs — `validate_results` and `merge_databases` rules
 
-These run after all batch jobs complete and need minimal resources.
+These run after all batch jobs complete.
 
 **`validate_results`** — Reads batch CSVs and queries `.db` files with SQLite:
 ```
@@ -214,12 +213,10 @@ resources:
 **`merge_databases`** (optional, manual) — Merges all `.db` files into one:
 ```
 resources:
-  time: "01:00:00"       # 1 hour
-  mem_mb: 8000           # 8 GB
+  time: "02:00:00"       # 1 hour
+  mem_mb: 32000           # 32 GB
   cpus_per_task: 1       # Single-threaded
 ```
-
-These are hardcoded in the Snakefile since they don't need tuning.
 
 ### Summary Diagram
 
@@ -354,6 +351,7 @@ If batch jobs are killed by SLURM due to exceeding their wall time:
 
    **Note:** Timed-out jobs leave `.db` files in `./` (project root) instead of
    `./OutputDatabases/` because the `mv` step never ran. Always clean both locations.
+   **Note:** If snakemake --unlock does not work, delete lock file in ./.snakemake/ directory manually
 
 ### Resuming a Partially Completed Run
 
